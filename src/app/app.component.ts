@@ -8,6 +8,7 @@ interface Entity {
   spd: number;
   hpBeforeFight?: number; // optional property
   isBoss?: boolean;
+  imageUrl?: any;
 }
 
 @Component({
@@ -19,77 +20,87 @@ export class AppComponent {
   showPopulation = false;
   playerGuardianAssigned = false;
   bosses: Entity[] = [
-    { name: 'Fire Dragon', hp: 500, str: 30, def: 20, spd: 15 },
-    { name: 'Ice Titan', hp: 400, str: 25, def: 25, spd: 10 },
-    { name: 'Shadow Behemoth', hp: 450, str: 28, def: 18, spd: 12 },
-    { name: 'Thunder Golem', hp: 350, str: 20, def: 30, spd: 10 },
-    { name: 'Ancient Hydra', hp: 500, str: 35, def: 15, spd: 20 },
-    { name: 'Earth Colossus', hp: 400, str: 22, def: 28, spd: 10 },
-    { name: 'Demon Lord', hp: 500, str: 40, def: 25, spd: 20 },
-    { name: 'Lava Serpent', hp: 450, str: 30, def: 20, spd: 25 },
-    { name: 'Titanic Kraken', hp: 500, str: 35, def: 15, spd: 20 },
-    { name: 'Celestial Phoenix', hp: 400, str: 28, def: 18, spd: 30 }
+    { name: 'Fire Dragon', hp: 500, str: 30, def: 20, spd: 15,imageUrl: 'assets/Caterpillar.gif' },
+    { name: 'Ice Titan', hp: 400, str: 25, def: 25, spd: 10 ,imageUrl: 'assets/Caterpillar.gif'},
+    { name: 'Shadow Behemoth', hp: 450, str: 28, def: 18, spd: 12 ,imageUrl: 'assets/Caterpillar.gif'},
+    { name: 'Thunder Golem', hp: 350, str: 20, def: 30, spd: 10 ,imageUrl: 'assets/Caterpillar.gif'},
+    { name: 'Ancient Hydra', hp: 500, str: 35, def: 15, spd: 20 ,imageUrl: 'assets/Caterpillar.gif'},
+    { name: 'Earth Colossus', hp: 400, str: 22, def: 28, spd: 10 ,imageUrl: 'assets/Caterpillar.gif'},
+    { name: 'Demon Lord', hp: 500, str: 40, def: 25, spd: 20 ,imageUrl: 'assets/Caterpillar.gif'},
+    { name: 'Lava Serpent', hp: 450, str: 30, def: 20, spd: 25 ,imageUrl: 'assets/Caterpillar.gif'},
+    { name: 'Titanic Kraken', hp: 500, str: 35, def: 15, spd: 20 ,imageUrl: 'assets/Caterpillar.gif'},
+    { name: 'Celestial Phoenix', hp: 400, str: 28, def: 18, spd: 30 ,imageUrl: 'assets/Caterpillar.gif'}
   ];
   bossesDefeated = 0;
   totalBossesToWin: number = 10;
   bossAvailable: boolean = false; // to toggle visual warning
   enemies = [
-    { name: 'Caterpillar', hp: 20, str: 5, def: 5, spd: 15 },
-    { name: 'Mouse', hp: 15, str: 5, def: 3, spd: 50 },
-    { name: 'Bunny', hp: 25, str: 7, def: 5, spd: 30 },
-    { name: 'Deer', hp: 30, str: 10, def: 7, spd: 25 },
-    { name: 'Sloth', hp: 20, str: 8, def: 12, spd: 10 },
-    { name: 'Goat', hp: 25, str: 8, def: 8, spd: 20 },
-    { name: 'Panda', hp: 25, str: 10, def: 10, spd: 15 },
-    { name: 'Moose', hp: 35, str: 12, def: 10, spd: 20 },
-    { name: 'Bison', hp: 30, str: 12, def: 10, spd: 15 },
-    { name: 'Gorilla', hp: 30, str: 12, def: 10, spd: 20 },
-    { name: 'Rhinoceros', hp: 40, str: 15, def: 12, spd: 15 },
-    { name: 'Beetle', hp: 15, str: 4, def: 5, spd: 20 },
-    { name: 'Fox', hp: 25, str: 10, def: 6, spd: 35 },
-    { name: 'Wolf', hp: 35, str: 15, def: 10, spd: 30 },
-    { name: 'Bear', hp: 50, str: 20, def: 15, spd: 20 },
-    { name: 'Tiger', hp: 45, str: 20, def: 12, spd: 35 },
-    { name: 'Lion', hp: 45, str: 22, def: 15, spd: 30 },
-    { name: 'Elephant', hp: 60, str: 25, def: 20, spd: 10 },
-    { name: 'Hawk', hp: 20, str: 10, def: 5, spd: 50 },
-    { name: 'Snake', hp: 25, str: 12, def: 5, spd: 40 },
-    { name: 'Crocodile', hp: 45, str: 18, def: 15, spd: 15 },
-    { name: 'Boar', hp: 35, str: 15, def: 10, spd: 20 },
-    { name: 'Owl', hp: 20, str: 8, def: 5, spd: 35 },
-    { name: 'Frog', hp: 15, str: 5, def: 3, spd: 25 },
-    { name: 'Lizard', hp: 20, str: 6, def: 4, spd: 30 },
-    { name: 'Goblin Farmer', hp: 40, str: 15, def: 10, spd: 25 },
-    { name: 'Goblin Mage', hp: 30, str: 20, def: 8, spd: 30 },
-    { name: 'Human Warrior', hp: 50, str: 20, def: 15, spd: 20 },
-    { name: 'Human Knight', hp: 55, str: 25, def: 20, spd: 15 },
-    { name: 'Elf Archer', hp: 35, str: 15, def: 10, spd: 40 },
-    { name: 'Elf Mage', hp: 30, str: 18, def: 8, spd: 35 },
-    { name: 'Orc Fighter', hp: 60, str: 25, def: 20, spd: 15 },
-    { name: 'Orc Shaman', hp: 50, str: 20, def: 15, spd: 20 },
-    { name: 'Beast People Hunter', hp: 45, str: 18, def: 15, spd: 25 },
-    { name: 'Beast People Warrior', hp: 50, str: 20, def: 18, spd: 20 }
-  ];
+  { name: 'Caterpillar', hp: 20, str: 5, def: 5, spd: 15, imageUrl: 'assets/Caterpillar.gif' },
+  { name: 'Mouse', hp: 15, str: 5, def: 3, spd: 50, imageUrl: 'assets/Mouse.gif' },
+  { name: 'Bunny', hp: 25, str: 7, def: 5, spd: 30, imageUrl: 'assets/Bunny.gif' },
+  { name: 'Deer', hp: 30, str: 10, def: 7, spd: 25, imageUrl: 'assets/Deer.webp' },
+  { name: 'Sloth', hp: 20, str: 8, def: 12, spd: 10, imageUrl: 'assets/Sloth.gif' },
+  { name: 'Goat', hp: 25, str: 8, def: 8, spd: 20, imageUrl: 'assets/Goat.gif' },
+  { name: 'Panda', hp: 25, str: 10, def: 10, spd: 15, imageUrl: 'assets/Panda.gif' }, 
+  { name: 'Bison', hp: 30, str: 12, def: 10, spd: 15, imageUrl: 'assets/Bison.gif' },
+  { name: 'Gorilla', hp: 30, str: 12, def: 10, spd: 20, imageUrl: 'assets/Gorilla.gif' }, 
+  { name: 'Beetle', hp: 15, str: 4, def: 5, spd: 20, imageUrl: 'assets/Beetle.gif' },
+  { name: 'Fox', hp: 25, str: 10, def: 6, spd: 35, imageUrl: 'assets/Fox.gif' },
+  { name: 'Wolf', hp: 35, str: 15, def: 10, spd: 30, imageUrl: 'assets/Wolf.gif' },
+  { name: 'Bear', hp: 50, str: 20, def: 15, spd: 20, imageUrl: 'assets/Bear.gif' },
+  { name: 'Tiger', hp: 45, str: 20, def: 12, spd: 35, imageUrl: 'assets/Tiger.gif' },
+  { name: 'Lion', hp: 45, str: 22, def: 15, spd: 30, imageUrl: 'assets/Lion.gif' },
+  { name: 'Elephant', hp: 60, str: 25, def: 20, spd: 10, imageUrl: 'assets/Elephant.gif' },
+  { name: 'Hawk', hp: 20, str: 10, def: 5, spd: 50, imageUrl: 'assets/Hawk.gif' },
+  { name: 'Snake', hp: 25, str: 12, def: 5, spd: 40, imageUrl: 'assets/Snake.gif' },
+  { name: 'Crocodile', hp: 45, str: 18, def: 15, spd: 15, imageUrl: 'assets/Crocodile.gif' },
+  { name: 'Boar', hp: 35, str: 15, def: 10, spd: 20, imageUrl: 'assets/Boar.gif' },
+  { name: 'Owl', hp: 20, str: 8, def: 5, spd: 35, imageUrl: 'assets/Owl.gif' },
+  { name: 'Frog', hp: 15, str: 5, def: 3, spd: 25, imageUrl: 'assets/Frog.gif' },
+  { name: 'Lizard', hp: 20, str: 6, def: 4, spd: 30, imageUrl: 'assets/Lizard.gif' },
+  { name: 'Goblin Farmer', hp: 40, str: 15, def: 10, spd: 25, imageUrl: 'assets/Goblin Farmer.gif' },
+  { name: 'Goblin Mage', hp: 30, str: 20, def: 8, spd: 30, imageUrl: 'assets/Goblin Mage.gif' },
+  { name: 'Human Warrior', hp: 50, str: 20, def: 15, spd: 20, imageUrl: 'assets/Human Warrior.gif' },
+  { name: 'Human Knight', hp: 55, str: 25, def: 20, spd: 15, imageUrl: 'assets/Human Knight.gif' },
+  { name: 'Elf Archer', hp: 35, str: 15, def: 10, spd: 40, imageUrl: 'assets/Elf Archer.gif' },
+  { name: 'Elf Mage', hp: 30, str: 18, def: 8, spd: 35, imageUrl: 'assets/Elf Mage.gif' },
+  { name: 'Orc Fighter', hp: 60, str: 25, def: 20, spd: 15, imageUrl: 'assets/Orc Fighter.gif' },
+  { name: 'Orc Shaman', hp: 50, str: 20, def: 15, spd: 20, imageUrl: 'assets/Orc Shaman.gif' },
+  { name: 'Beast People Hunter', hp: 45, str: 18, def: 15, spd: 25, imageUrl: 'assets/Beast People Hunter.gif' },
+  { name: 'Beast People Warrior', hp: 50, str: 20, def: 18, spd: 20, imageUrl: 'assets/Beast People Warrior.gif' }
+];
+
   biomeEnemies: any = {
     forest: ['Caterpillar', 'Bunny', 'Deer', 'Sloth', 'Goblin Farmer', 'Fox', 'Wolf'],
-    plains: ['Mouse', 'Goat', 'Bison', 'Human Warrior', 'Bear', 'Tiger', 'Lion'],
+    plains: ['Mouse', 'Goat', 'Bison', 'Human Warrior','Human Knight', 'Bear', 'Tiger', 'Lion'],
     jungle: ['Panda', 'Gorilla', 'Elf Archer', 'Elf Mage'],
-    mountains: ['Moose', 'Rhinoceros', 'Orc Fighter', 'Orc Shaman', 'Elephant'],
-    swamp: ['Beetle', 'Goblin Mage', 'Beast People Hunter', 'Crocodile', 'Boar', 'Frog', 'Lizard', 'Owl', 'Snake', 'Hawk']
+    mountains: [   'Orc Fighter', 'Orc Shaman', 'Elephant'],
+    swamp: ['Beetle', 'Goblin Mage', 'Beast People Hunter','Beast People Warrior', 'Crocodile', 'Boar', 'Frog', 'Lizard', 'Owl', 'Snake', 'Hawk']
   };
   guardians = [
-    { name: 'Caterpillar', hp: 20, str: 5, def: 5, spd: 15 },
-    { name: 'Mouse', hp: 15, str: 5, def: 3, spd: 50 },
-    { name: 'Bunny', hp: 25, str: 7, def: 5, spd: 30 },
-    { name: 'Deer', hp: 30, str: 10, def: 7, spd: 25 },
-    { name: 'Sloth', hp: 20, str: 8, def: 12, spd: 10 },
-    { name: 'Goat', hp: 25, str: 8, def: 8, spd: 20 },
-    { name: 'Panda', hp: 25, str: 10, def: 10, spd: 15 },
-    { name: 'Moose', hp: 35, str: 12, def: 10, spd: 20 },
-    { name: 'Bison', hp: 30, str: 12, def: 10, spd: 15 },
-    { name: 'Gorilla', hp: 30, str: 12, def: 10, spd: 20 },
-    { name: 'Rhinoceros', hp: 40, str: 15, def: 12, spd: 15 },
-    { name: 'Beetle', hp: 15, str: 4, def: 5, spd: 60 }
+    { name: 'Caterpillar', hp: 20, str: 5, def: 5, spd: 15, imageUrl: 'assets/Caterpillar.gif' },
+  { name: 'Mouse', hp: 15, str: 5, def: 3, spd: 50, imageUrl: 'assets/Mouse.gif' },
+  { name: 'Bunny', hp: 25, str: 7, def: 5, spd: 30, imageUrl: 'assets/Bunny.gif' },
+  { name: 'Deer', hp: 30, str: 10, def: 7, spd: 25, imageUrl: 'assets/Deer.webp' },
+  { name: 'Sloth', hp: 20, str: 8, def: 12, spd: 10, imageUrl: 'assets/Sloth.gif' },
+  { name: 'Goat', hp: 25, str: 8, def: 8, spd: 20, imageUrl: 'assets/Goat.gif' },
+  { name: 'Panda', hp: 25, str: 10, def: 10, spd: 15, imageUrl: 'assets/Panda.gif' }, 
+  { name: 'Bison', hp: 30, str: 12, def: 10, spd: 15, imageUrl: 'assets/Bison.gif' },
+  { name: 'Gorilla', hp: 30, str: 12, def: 10, spd: 20, imageUrl: 'assets/Gorilla.gif' }, 
+  { name: 'Beetle', hp: 15, str: 4, def: 5, spd: 20, imageUrl: 'assets/Beetle.gif' },
+  { name: 'Fox', hp: 25, str: 10, def: 6, spd: 35, imageUrl: 'assets/Fox.gif' },
+  { name: 'Wolf', hp: 35, str: 15, def: 10, spd: 30, imageUrl: 'assets/Wolf.gif' },
+  { name: 'Bear', hp: 50, str: 20, def: 15, spd: 20, imageUrl: 'assets/Bear.gif' },
+  { name: 'Tiger', hp: 45, str: 20, def: 12, spd: 35, imageUrl: 'assets/Tiger.gif' },
+  { name: 'Lion', hp: 45, str: 22, def: 15, spd: 30, imageUrl: 'assets/Lion.gif' },
+  { name: 'Elephant', hp: 60, str: 25, def: 20, spd: 10, imageUrl: 'assets/Elephant.gif' },
+  { name: 'Hawk', hp: 20, str: 10, def: 5, spd: 50, imageUrl: 'assets/Hawk.gif' },
+  { name: 'Snake', hp: 25, str: 12, def: 5, spd: 40, imageUrl: 'assets/Snake.gif' },
+  { name: 'Crocodile', hp: 45, str: 18, def: 15, spd: 15, imageUrl: 'assets/Crocodile.gif' },
+  { name: 'Boar', hp: 35, str: 15, def: 10, spd: 20, imageUrl: 'assets/Boar.gif' },
+  { name: 'Owl', hp: 20, str: 8, def: 5, spd: 35, imageUrl: 'assets/Owl.gif' },
+  { name: 'Frog', hp: 15, str: 5, def: 3, spd: 25, imageUrl: 'assets/Frog.gif' },
+  { name: 'Lizard', hp: 20, str: 6, def: 4, spd: 30, imageUrl: 'assets/Lizard.gif' },
   ];
   regenInterval: any;
   guardianRegenInterval: any = null;
@@ -111,11 +122,9 @@ guardianRegenMessage: string = '';
     { name: 'Deer', count: 30, biome: 'forest' },
     { name: 'Sloth', count: 15, biome: 'forest' },
     { name: 'Goat', count: 25, biome: 'plains' },
-    { name: 'Panda', count: 10, biome: 'jungle' },
-    { name: 'Moose', count: 5, biome: 'mountains' },
+    { name: 'Panda', count: 10, biome: 'jungle' }, 
     { name: 'Bison', count: 10, biome: 'plains' },
-    { name: 'Gorilla', count: 5, biome: 'jungle' },
-    { name: 'Rhinoceros', count: 3, biome: 'mountains' },
+    { name: 'Gorilla', count: 5, biome: 'jungle' }, 
     { name: 'Beetle', count: 100, biome: 'swamp' },
     { name: 'Fox', count: 20, biome: 'forest' },
     { name: 'Wolf', count: 15, biome: 'forest' },
@@ -149,11 +158,9 @@ enemyEmojis: { [key: string]: string } = {
     "Deer": "🦌",
     "Sloth": "🦥",
     "Goat": "🐐",
-    "Panda": "🐼",
-    "Moose": "🦌",
+    "Panda": "🐼", 
     "Bison": "🐃",
-    "Gorilla": "🦍",
-    "Rhinoceros": "🦏",
+    "Gorilla": "🦍", 
     "Beetle": "🐞",
     "Fox": "🦊",
     "Wolf": "🐺",
@@ -334,7 +341,7 @@ stopGuardianRegen() {
     setTimeout(() => this.scrollToBottom(), 0);
   }
 
- attackEnemy() {
+attackEnemy() {
   if (!this.currentEnemy || !this.guardian) return;
 
   // Stop healing during combat
@@ -359,22 +366,23 @@ stopGuardianRegen() {
         this.addMessage("🎉 Congratulations! You defeated all bosses!");
       }
     } else {
+      // Non-boss enemy defeated
       const animal = this.animals.find(a => a.name === this.currentEnemy!.name);
       if (animal) animal.count = Math.max(0, animal.count - 1);
 
-      // Award skill point instead of adding stats
+      // ✅ Give exactly 1 skill point
       this.skillPoints++;
       this.addMessage(`⭐ You earned 1 Skill Point! (Total: ${this.skillPoints})`);
 
-      this.absorbStats(this.currentEnemy); // optional: keep only non-HP stats absorption
-      this.addMessage(`🪶 You absorbed ${this.currentEnemy.name}'s strength!`);
-
-      // Restart healing if HP < max
-      this.maybeStartRegen();
+      // Absorb stats (HP + fractions of STR/DEF/SPD)
+      this.absorbStats(this.currentEnemy);
     }
 
+    // Reset enemy + check for bosses + restart regen
     this.currentEnemy = null;
     this.checkBossAvailability();
+    this.maybeStartRegen();
+    this.saveGame();
     return;
   }
 
@@ -402,6 +410,8 @@ stopGuardianRegen() {
 }
 
 
+
+
   selectNewGuardian() {
     this.showGuardianSlainPopup = false;
     this.assignRandomGuardian();
@@ -414,21 +424,28 @@ stopGuardianRegen() {
     return Math.random() < dodgeChance;
   }
   absorbStats(enemy: Entity) {
-    if (!this.guardian) return;
+  if (!this.guardian) return;
 
-    const originalHp = (enemy.hpBeforeFight ?? enemy.hp) / 3; // full original HP
-    this.guardian.hp += originalHp;
-    this.guardian.str += enemy.str * 0.01;
-    this.guardian.def += enemy.def * 0.01;
-    this.guardian.spd += enemy.spd * 0.01;
+  const originalHp = (enemy.hpBeforeFight ?? enemy.hp) / 3; // full original HP
+  this.guardian.hp += originalHp;
+  this.guardian.str += enemy.str * 0.01;
+  this.guardian.def += enemy.def * 0.01;
+  this.guardian.spd += enemy.spd * 0.01;
 
-    // Show absorbed stats in messages
-    this.addMessage(`✨ You absorbed ${enemy.name}'s strength!`);
-    this.addMessage(`❤️ HP +${originalHp}`);
-    this.addMessage(`⚔️ STR +${(enemy.str * 0.01).toFixed(2)}`);
-    this.addMessage(`🛡️ DEF +${(enemy.def * 0.01).toFixed(2)}`);
-    this.addMessage(`💨 SPD +${(enemy.spd * 0.01).toFixed(2)}`);
-  }
+  // ✅ Award 1 skill point per absorbed enemy
+  // this.skillPoints = (this.skillPoints || 0) + 1;
+
+  // Show absorbed stats in messages
+  this.addMessage(`✨ You absorbed ${enemy.name}'s strength!`);
+  this.addMessage(`❤️ HP +${originalHp.toFixed(2)}`);
+  this.addMessage(`⚔️ STR +${(enemy.str * 0.01).toFixed(2)}`);
+  this.addMessage(`🛡️ DEF +${(enemy.def * 0.01).toFixed(2)}`);
+  this.addMessage(`💨 SPD +${(enemy.spd * 0.01).toFixed(2)}`);
+  this.addMessage(`⚡ You gained +1 Skill Point! (Total: ${this.skillPoints})`);
+
+  this.saveGame(); // ✅ keep progress safe
+}
+
 
 maybeStartRegen() {
   if (this.guardian && this.guardian.hp > 0 && this.guardian.hp < this.guardianMaxHp) {
@@ -603,10 +620,12 @@ this.stopGuardianRegen();
     selectedBiome: this.selectedBiome,
     currentEnemy: this.currentEnemy,         // persist ongoing fight (if any)
     messages: this.messages,
+    skillPoints: this.skillPoints,           // 🔥 persist skill points
     lastSaved: Date.now()
   };
   localStorage.setItem('gameState', JSON.stringify(state));
 }
+
 loadGame() {
   const saved = localStorage.getItem("gameState");
   if (!saved) return;
@@ -618,6 +637,7 @@ loadGame() {
     this.guardianMaxHp = state.guardianMaxHp ?? (this.guardian?.hp ?? 0);
     this.bossesDefeated = state.bossesDefeated ?? 0;
     this.gameWon = !!state.gameWon;
+    this.skillPoints = state.skillPoints ?? 0;   // 🔥 restore skill points
 
     // Collections / UI state
     this.animals = state.animals ?? this.animals;
@@ -662,6 +682,7 @@ loadGame() {
     localStorage.removeItem("gameState"); // prevent getting stuck on a bad save
   }
 }
+
 
 
   guardianEmoji: string = "🛡️";        // default emoji for Guardian

@@ -12,11 +12,11 @@
     <header>
       <br><br><br>
       <span>🗡️ The Last Guardian 🐉</span>
-      <button class="fullscreen-btn" (click)="toggleFullscreen()">
-        <span *ngIf="!isFullscreen">🗖</span>
-        <span *ngIf="isFullscreen">🗕</span>
-      </button>
     </header>
+    <button class="fullscreen-btn" (click)="toggleFullscreen()">
+      <span *ngIf="!isFullscreen">🗖</span>
+      <span *ngIf="isFullscreen">🗕</span>
+    </button>
 
     <main>
 
@@ -34,9 +34,9 @@
         <!-- Guardian Table -->
         <table class="side-table">
           <caption>🛡️ Your Guardian</caption>
-          <tr><td colspan="2" class="entity-img">{{guardianEmoji}}</td></tr>
-          <tr><td>📝 Name:</td><td>{{guardian.name}}</td></tr>
-          <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}} / {{guardianMaxHp}}</td></tr>
+          <tr><td colspan="2" class="entity-img"><img [src]="guardian.imageUrl" [alt]="guardian.name" class="guardian-gif" style="height:70px"> </td></tr>
+          <tr> <td colspan="2" >{{guardian.name}} - {{guardian.imageUrl}}</td></tr>
+          <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{guardian.str | number:'1.0-2'}}</td></tr>
           <tr><td>🛡️ DEF:</td><td>{{guardian.def | number:'1.0-2'}}</td></tr>
           <tr><td>💨 SPD:</td><td>{{guardian.spd | number:'1.0-2'}}</td></tr>
@@ -48,8 +48,8 @@
         <!-- Enemy Table -->
         <table class="side-table">
           <caption>👹 Enemy</caption>
-          <tr><td colspan="2" class="entity-img">{{currentEnemyEmoji}}</td></tr>
-          <tr><td>📝 Name:</td><td>{{currentEnemy.name}}</td></tr>
+          <tr><td colspan="2" class="entity-img"><img [src]="currentEnemy.imageUrl" [alt]="currentEnemyEmoji" class="enemy-gif" style="height:70px"/></td></tr>
+          <tr> <td colspan="2">{{currentEnemy.name}}</td></tr>
           <tr><td>❤️ HP:</td><td>{{currentEnemy.hp}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{currentEnemy.str}}</td></tr>
           <tr><td>🛡️ DEF:</td><td>{{currentEnemy.def}}</td></tr>
@@ -63,22 +63,20 @@
       <div class="stats-panel" *ngIf="!currentEnemy && guardian">
         <h3>🛡️ Guardian Stats</h3>
         <table>
-          <tr><td colspan="2" class="entity-img">{{guardianEmoji}}</td></tr>
+          <tr><td colspan="2" class="entity-img"><img [src]="guardian.imageUrl" [alt]="guardianEmoji" class="enemy-gif" style="height:70px"/> </td></tr>
           <tr><td>📝 Name:</td><td>{{guardian.name}}</td></tr>
-          <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}} / {{guardianMaxHp}}</td></tr>
+          <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{guardian.str | number:'1.0-2'}}</td></tr>
           <tr><td>🛡️ DEF:</td><td>{{guardian.def | number:'1.0-2'}}</td></tr>
           <tr><td>💨 SPD:</td><td>{{guardian.spd | number:'1.0-2'}}</td></tr>
         </table>
-
-        <!-- Skill Points Panel -->
-        <div *ngIf="skillPoints > 0" class="skill-panel">
-          <p>⭐ Skill Points: {{ skillPoints }}</p>
-          <button (click)="spendSkillPoint('str')">+ STR</button>
-          <button (click)="spendSkillPoint('def')">+ DEF</button>
-          <button (click)="spendSkillPoint('spd')">+ SPD</button>
-        </div>
-
+<!-- 🎯 Skill Points Panel -->
+<div class="skills-panel" *ngIf="skillPoints > 0" style="margin-top:8px;">
+  <h4>✨ Skill Points: {{ skillPoints }}</h4>
+  <button (click)="spendSkillPoint('str')">⚔️ + STR</button>
+  <button (click)="spendSkillPoint('def')">🛡️ + DEF</button>
+  <button (click)="spendSkillPoint('spd')">💨 + SPD</button>
+</div>
         <!-- Boss Info & Button -->
         <div *ngIf="guardian.hp >= 100 && bossesDefeated < totalBossesToWin">
           <p>⚠️ Boss Fights Available! Defeat {{ totalBossesToWin - bossesDefeated }} more bosses to win!</p>
@@ -90,7 +88,6 @@
           <p>🎉 You have completed all boss fights! Do you want to restart a new journey?</p>
           <button (click)="resetGame()">⏳ Start New Journey</button>
         </div>
-
       </div>
 
       <!-- Healing Info -->
@@ -103,6 +100,34 @@
 
     </main>
 
+    <!-- ✅ Population Button (fixed position, always accessible) -->
+    <div class="population-btn" style="text-align:center; margin:1vh 0;">
+      <button (click)="showPopulation = true">🌎 View Populations</button>
+    </div>
+    <div class="popup" *ngIf="showPopulation">
+      <div class="popup-content">
+        <button (click)="showPopulation = false" style="margin-left: 77%;">❌ Close</button>
+        <h2>🌍 Current Populations</h2>
+
+        <h3>🏹 Tribes</h3>
+        <table>
+          <tr *ngFor="let tribe of tribes">
+            <td>{{tribe.name}}</td>
+            <td>{{tribe.population}}</td>
+          </tr>
+        </table>
+
+        <h3>🐾 Animals</h3>
+        <table>
+          <tr *ngFor="let animal of animals">
+            <td>{{animal.name}}</td>
+            <td>{{animal.count}}</td>
+          </tr>
+        </table>
+
+        <button (click)="showPopulation = false"style="margin-left: 77%;">❌ Close</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -110,23 +135,28 @@
 <div class="popup" *ngIf="showGuardianSlainPopup">
   <div class="popup-content">
     <h2>💀 Your Guardian was defeated!</h2> 
-    <button (click)="selectNewGuardian()">🛡️ Select New Guardian</button>
+    <img src="assets/game over.gif"   style="height:360px"><br>
+    <button (click)="selectNewGuardian()">🛡️ Rewind Time </button>
   </div>
 </div>
 
 <!-- Fixed Mobile-Friendly Action Panel -->
 <div class="action-panel" *ngIf="playerGuardianAssigned">
-
   <ng-container *ngIf="guardian; else selectGuardian">
+    
     <button (click)="searchEnemy()" [disabled]="!!currentEnemy || !selectedBiome">🔍 Search</button>
     <button (click)="attackEnemy()" [disabled]="!currentEnemy">⚔️ Attack</button>
     <button (click)="autoAttackEnemy()" [disabled]="!currentEnemy">⚔️ Auto ⚔️</button>
     <button (click)="escape()" [disabled]="!currentEnemy">🏃 Escape</button>
-    <button (click)="searchBoss()" *ngIf="guardian.hp >= 100 && bossesDefeated < totalBossesToWin && !currentEnemy">👹 Boss Fight</button>
+
+    <button 
+      (click)="searchBoss()" 
+      *ngIf="guardian.hp >= 100 && bossesDefeated < totalBossesToWin && !currentEnemy">
+      👹 Boss Fight
+    </button>
   </ng-container>
 
   <ng-template #selectGuardian>
     <button (click)="assignRandomGuardian()">🛡️ Select Guardian</button>
   </ng-template>
-
 </div>
