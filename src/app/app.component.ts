@@ -205,6 +205,26 @@ enemyEmojis: { [key: string]: string } = {
   this.updateGuardianEmoji();
   this.saveGame();
 }
+skillPoints: number = 0;
+spendSkillPoint(stat: "str" | "def" | "spd") {
+  if (!this.guardian || this.skillPoints <= 0) return;
+
+  switch (stat) {
+    case "str":
+      this.guardian.str += 1;
+      break;
+    case "def":
+      this.guardian.def += 1;
+      break;
+    case "spd":
+      this.guardian.spd += 1;
+      break;
+  }
+
+  this.skillPoints--;
+  this.addMessage(`⚡ You spent 1 Skill Point on ${stat.toUpperCase()}.`);
+  this.saveGame();
+}
   gameOver() {
     if (this.guardianRegenInterval) clearInterval(this.guardianRegenInterval);
     this.addMessage("💀 Game Over!");
@@ -314,70 +334,73 @@ stopGuardianRegen() {
     setTimeout(() => this.scrollToBottom(), 0);
   }
 
-  attackEnemy() {
-    if (!this.currentEnemy || !this.guardian) return;
-this.stopGuardianRegen();
-    // --- Player attacks enemy ---
-    if (!this.rollDodge(this.guardian, this.currentEnemy)) {
-      const dmg = this.calculateDamage(this.guardian, this.currentEnemy);
-      this.currentEnemy.hp -= dmg;
-      this.addMessage(`You hit ${this.currentEnemy.name} for ${dmg} damage!`);
-    } else {
-      this.addMessage(`${this.currentEnemy.name} dodged your attack!`);
-    }
+ attackEnemy() {
+  if (!this.currentEnemy || !this.guardian) return;
 
-    // --- Check if enemy is defeated ---
-    if (this.currentEnemy.hp <= 0) {
+  // Stop healing during combat
+  this.stopGuardianRegen();
 
-  if (this.currentEnemy.isBoss) {
-    // Boss defeated
-    this.bossesDefeated++;
-    this.addMessage(`🏆 You defeated boss ${this.currentEnemy.name}!`);
-
-    if (this.bossesDefeated >= this.totalBossesToWin) {
-      this.gameWon = true;
-      this.addMessage("🎉 Congratulations! You defeated all bosses!");
-    }
-
+  // --- Player attacks enemy ---
+  if (!this.rollDodge(this.guardian, this.currentEnemy)) {
+    const dmg = this.calculateDamage(this.guardian, this.currentEnemy);
+    this.currentEnemy.hp -= dmg;
+    this.addMessage(`You hit ${this.currentEnemy.name} for ${dmg} damage!`);
   } else {
-    // Normal enemy defeated: reduce population and absorb stats
-    const animal = this.animals.find(a => a.name === this.currentEnemy!.name);
-    if (animal) {
-      animal.count = Math.max(0, animal.count - 1);
-    }
-    this.absorbStats(this.currentEnemy);
-    this.addMessage(`🪶 You absorbed ${this.currentEnemy.name}'s strength!`);
-
-    // ✅ Start healing if HP < max
-    this.maybeStartRegen();   // <- add this line here
+    this.addMessage(`${this.currentEnemy.name} dodged your attack!`);
   }
 
-  this.currentEnemy = null;
-  this.checkBossAvailability();
-  return;
+  // --- Check if enemy is defeated ---
+  if (this.currentEnemy.hp <= 0) {
+    if (this.currentEnemy.isBoss) {
+      this.bossesDefeated++;
+      this.addMessage(`🏆 You defeated boss ${this.currentEnemy.name}!`);
+      if (this.bossesDefeated >= this.totalBossesToWin) {
+        this.gameWon = true;
+        this.addMessage("🎉 Congratulations! You defeated all bosses!");
+      }
+    } else {
+      const animal = this.animals.find(a => a.name === this.currentEnemy!.name);
+      if (animal) animal.count = Math.max(0, animal.count - 1);
+
+      // Award skill point instead of adding stats
+      this.skillPoints++;
+      this.addMessage(`⭐ You earned 1 Skill Point! (Total: ${this.skillPoints})`);
+
+      this.absorbStats(this.currentEnemy); // optional: keep only non-HP stats absorption
+      this.addMessage(`🪶 You absorbed ${this.currentEnemy.name}'s strength!`);
+
+      // Restart healing if HP < max
+      this.maybeStartRegen();
+    }
+
+    this.currentEnemy = null;
+    this.checkBossAvailability();
+    return;
+  }
+
+  // --- Enemy attacks player ---
+  if (!this.rollDodge(this.currentEnemy, this.guardian)) {
+    const dmg = this.calculateDamage(this.currentEnemy, this.guardian);
+    this.guardian.hp -= dmg;
+    this.addMessage(`${this.currentEnemy.name} hit you for ${dmg} damage!`);
+  } else {
+    this.addMessage(`You dodged ${this.currentEnemy.name}'s attack!`);
+  }
+
+  // --- Check if Guardian is defeated ---
+  if (this.guardian.hp <= 0) {
+    this.guardian.hp = 0;
+    this.addMessage(`💀 Your Guardian was defeated by ${this.currentEnemy?.name || 'the enemy'}!`);
+    this.showGuardianSlainPopup = true;
+    this.currentEnemy = null;
+    this.playerGuardianAssigned = false;
+
+    this.stopGuardianRegen();
+  }
+
+  this.saveGame();
 }
 
-    // --- Enemy attacks player ---
-    if (!this.rollDodge(this.currentEnemy, this.guardian)) {
-      const dmg = this.calculateDamage(this.currentEnemy, this.guardian);
-      this.guardian.hp -= dmg;
-      this.addMessage(`${this.currentEnemy.name} hit you for ${dmg} damage!`);
-    } else {
-      this.addMessage(`You dodged ${this.currentEnemy.name}'s attack!`);
-    }
-
-    // --- Check if Guardian is defeated ---
-    if (this.guardian.hp <= 0) {
-      this.guardian.hp = 0;
-      this.addMessage(`💀 Your Guardian was defeated by ${this.currentEnemy?.name || 'the enemy'}!`);
-      this.showGuardianSlainPopup = true;
-      this.currentEnemy = null;
-      this.playerGuardianAssigned = false;
-
-      // Stop regeneration while guardian is dead
-      this.stopGuardianRegen();
-    }
-  }
 
   selectNewGuardian() {
     this.showGuardianSlainPopup = false;

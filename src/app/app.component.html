@@ -10,15 +10,14 @@
 
     <!-- Header -->
     <header>
-      <br>
-      <br>
-      <br>
+      <br><br><br>
       <span>🗡️ The Last Guardian 🐉</span>
+      <button class="fullscreen-btn" (click)="toggleFullscreen()">
+        <span *ngIf="!isFullscreen">🗖</span>
+        <span *ngIf="isFullscreen">🗕</span>
+      </button>
     </header>
-<button class="fullscreen-btn" (click)="toggleFullscreen()">
-  <span *ngIf="!isFullscreen">🗖</span>
-  <span *ngIf="isFullscreen">🗕</span>
-</button>
+
     <main>
 
       <!-- Biome Selection -->
@@ -37,7 +36,7 @@
           <caption>🛡️ Your Guardian</caption>
           <tr><td colspan="2" class="entity-img">{{guardianEmoji}}</td></tr>
           <tr><td>📝 Name:</td><td>{{guardian.name}}</td></tr>
-          <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}}</td></tr>
+          <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}} / {{guardianMaxHp}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{guardian.str | number:'1.0-2'}}</td></tr>
           <tr><td>🛡️ DEF:</td><td>{{guardian.def | number:'1.0-2'}}</td></tr>
           <tr><td>💨 SPD:</td><td>{{guardian.spd | number:'1.0-2'}}</td></tr>
@@ -66,11 +65,19 @@
         <table>
           <tr><td colspan="2" class="entity-img">{{guardianEmoji}}</td></tr>
           <tr><td>📝 Name:</td><td>{{guardian.name}}</td></tr>
-          <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}}</td></tr>
+          <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}} / {{guardianMaxHp}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{guardian.str | number:'1.0-2'}}</td></tr>
           <tr><td>🛡️ DEF:</td><td>{{guardian.def | number:'1.0-2'}}</td></tr>
           <tr><td>💨 SPD:</td><td>{{guardian.spd | number:'1.0-2'}}</td></tr>
         </table>
+
+        <!-- Skill Points Panel -->
+        <div *ngIf="skillPoints > 0" class="skill-panel">
+          <p>⭐ Skill Points: {{ skillPoints }}</p>
+          <button (click)="spendSkillPoint('str')">+ STR</button>
+          <button (click)="spendSkillPoint('def')">+ DEF</button>
+          <button (click)="spendSkillPoint('spd')">+ SPD</button>
+        </div>
 
         <!-- Boss Info & Button -->
         <div *ngIf="guardian.hp >= 100 && bossesDefeated < totalBossesToWin">
@@ -96,34 +103,6 @@
 
     </main>
 
-    <!-- Population Popup -->
-    <div class="population-btn" style="text-align:center; margin-top:1vh;">
-      <button (click)="showPopulation = true">🌎 View Populations</button>
-    </div>
-    <div class="popup" *ngIf="showPopulation">
-      <div class="popup-content">
-        <h2>🌍 Current Populations</h2>
-
-        <h3>🏹 Tribes</h3>
-        <table>
-          <tr *ngFor="let tribe of tribes">
-            <td>{{tribe.name}}</td>
-            <td>{{tribe.population}}</td>
-          </tr>
-        </table>
-
-        <h3>🐾 Animals</h3>
-        <table>
-          <tr *ngFor="let animal of animals">
-            <td>{{animal.name}}</td>
-            <td>{{animal.count}}</td>
-          </tr>
-        </table>
-
-        <button (click)="showPopulation = false">❌ Close</button>
-      </div>
-    </div>
-
   </div>
 </div>
 
@@ -139,26 +118,11 @@
 <div class="action-panel" *ngIf="playerGuardianAssigned">
 
   <ng-container *ngIf="guardian; else selectGuardian">
-    
-    <!-- Search Enemy -->
-    <button 
-      (click)="searchEnemy()" 
-      [disabled]="!!currentEnemy || !selectedBiome">
-      🔍 Search
-    </button>
-
-    <!-- Attack / Escape Buttons -->
+    <button (click)="searchEnemy()" [disabled]="!!currentEnemy || !selectedBiome">🔍 Search</button>
     <button (click)="attackEnemy()" [disabled]="!currentEnemy">⚔️ Attack</button>
     <button (click)="autoAttackEnemy()" [disabled]="!currentEnemy">⚔️ Auto ⚔️</button>
     <button (click)="escape()" [disabled]="!currentEnemy">🏃 Escape</button>
-
-    <!-- Boss Fight -->
-    <button 
-      (click)="searchBoss()" 
-      *ngIf="guardian.hp >= 100 && bossesDefeated < totalBossesToWin && !currentEnemy">
-      👹 Boss Fight
-    </button>
-
+    <button (click)="searchBoss()" *ngIf="guardian.hp >= 100 && bossesDefeated < totalBossesToWin && !currentEnemy">👹 Boss Fight</button>
   </ng-container>
 
   <ng-template #selectGuardian>
