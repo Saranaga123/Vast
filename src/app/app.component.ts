@@ -559,7 +559,6 @@ loadGame() {
     this.animals = state.animals;
 
     if (this.guardian) {
-      // ✅ check offline regen
       const now = Date.now();
       const elapsedMs = now - (state.lastSaved || now);
       const minutesAway = Math.floor(elapsedMs / 60000);
@@ -574,9 +573,15 @@ loadGame() {
           `🌿 While you were away (${minutesAway} min), your Guardian recovered ${hpRecovered} HP!`
         );
       }
+
+      // ✅ restart regen if not full
+      if (this.guardian.hp < this.guardianMaxHp) {
+        this.maybeStartRegen();
+      }
     }
   }
 }
+
   guardianEmoji: string = "🛡️";        // default emoji for Guardian
   currentEnemyEmoji: string = "👹";    // default emoji for Enemy
   updateGuardianEmoji() {
