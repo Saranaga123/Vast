@@ -452,18 +452,16 @@ isFullscreen: boolean = false;
 
 toggleFullscreen() {
   if (!this.isFullscreen) {
-    // Enter fullscreen
     const elem = document.documentElement;
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
     } else if ((elem as any).webkitRequestFullscreen) {
-      (elem as any).webkitRequestFullscreen(); // Safari
+      (elem as any).webkitRequestFullscreen();
     } else if ((elem as any).msRequestFullscreen) {
-      (elem as any).msRequestFullscreen(); // IE11
+      (elem as any).msRequestFullscreen();
     }
     this.isFullscreen = true;
   } else {
-    // Exit fullscreen
     if (document.exitFullscreen) {
       document.exitFullscreen();
     } else if ((document as any).webkitExitFullscreen) {

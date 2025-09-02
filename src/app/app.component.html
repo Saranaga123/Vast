@@ -161,6 +161,7 @@
     <button (click)="assignRandomGuardian()">🛡️ Select Guardian</button>
   </ng-template>
 <button class="fullscreen-btn" (click)="toggleFullscreen()">
-  {{ isFullscreen ? '🗕 Exit Fullscreen' : '🗖 Fullscreen' }}
+  <span *ngIf="!isFullscreen">🗖</span>
+  <span *ngIf="isFullscreen">🗕</span>
 </button>
 </div>
