@@ -15,7 +15,10 @@
       <br>
       <span>🗡️ The Last Guardian 🐉</span>
     </header>
-
+<button class="fullscreen-btn" (click)="toggleFullscreen()">
+  <span *ngIf="!isFullscreen">🗖</span>
+  <span *ngIf="isFullscreen">🗕</span>
+</button>
     <main>
 
       <!-- Biome Selection -->
@@ -160,8 +163,5 @@
   <ng-template #selectGuardian>
     <button (click)="assignRandomGuardian()">🛡️ Select Guardian</button>
   </ng-template>
-<button class="fullscreen-btn" (click)="toggleFullscreen()">
-  <span *ngIf="!isFullscreen">🗖</span>
-  <span *ngIf="isFullscreen">🗕</span>
-</button>
+
 </div>

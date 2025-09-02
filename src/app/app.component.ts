@@ -539,38 +539,42 @@ this.stopGuardianRegen();
     return Math.floor(dodgeChance * 100); // convert to %
   }
   saveGame() {
-    const gameState = {
-      guardian: this.guardian,
-      playerGuardianAssigned: this.playerGuardianAssigned,
-      tribes: this.tribes,
-      animals: this.animals,
-      messages: this.messages,
-      selectedBiome: this.selectedBiome,
-      currentEnemy: this.currentEnemy
-    };
-
-    localStorage.setItem('lastGuardianSave', JSON.stringify(gameState));
-  }
-  loadGame() {
-  const saved = localStorage.getItem('lastGuardianSave');
+  const gameState = {
+    guardian: this.guardian,
+    guardianMaxHp: this.guardianMaxHp,
+    bossesDefeated: this.bossesDefeated,
+    animals: this.animals,
+    lastSaved: Date.now()   // ✅ store current timestamp
+  };
+  localStorage.setItem("gameState", JSON.stringify(gameState));
+}
+loadGame() {
+  const saved = localStorage.getItem("gameState");
   if (saved) {
-    const data = JSON.parse(saved);
-    this.guardian = data.guardian;
-    this.playerGuardianAssigned = data.playerGuardianAssigned;
-    this.tribes = data.tribes;
-    this.animals = data.animals;
-    this.messages = data.messages || [];
-    this.selectedBiome = data.selectedBiome;
-    this.currentEnemy = data.currentEnemy;
+    const state = JSON.parse(saved);
 
-    // Set max HP for healing calculations
+    this.guardian = state.guardian;
+    this.guardianMaxHp = state.guardianMaxHp;
+    this.bossesDefeated = state.bossesDefeated;
+    this.animals = state.animals;
+
     if (this.guardian) {
-      this.guardianMaxHp = this.guardian.hp; // ✅ important!
-    }
+      // ✅ check offline regen
+      const now = Date.now();
+      const elapsedMs = now - (state.lastSaved || now);
+      const minutesAway = Math.floor(elapsedMs / 60000);
 
-    this.updateGuardianEmoji();
-    this.updateEnemyEmoji();
-    this.startGuardianRegen(); // ✅ restart healing after reload
+      if (minutesAway > 0 && this.guardian.hp < this.guardianMaxHp) {
+        const hpRecovered = minutesAway * 10;
+        this.guardian.hp = Math.min(
+          this.guardian.hp + hpRecovered,
+          this.guardianMaxHp
+        );
+        this.addMessage(
+          `🌿 While you were away (${minutesAway} min), your Guardian recovered ${hpRecovered} HP!`
+        );
+      }
+    }
   }
 }
   guardianEmoji: string = "🛡️";        // default emoji for Guardian
