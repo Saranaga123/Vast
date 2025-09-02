@@ -480,23 +480,54 @@ toggleFullscreen() {
   }
   guardian: Entity | null = null;
   resetGame() {
-    localStorage.removeItem('lastGuardianSave');
+  localStorage.removeItem('gameState');
 
-    // Reset local variables
-    this.guardian = null;
-    this.playerGuardianAssigned = false;
-    this.tribes.forEach(t => t.population = t.population || 100);
-    this.animals.forEach(a => a.count = a.count || 50);
-    this.messages = [];
-    this.currentEnemy = null;
-    this.selectedBiome = this.biomes[0];
+  this.guardian = null;
+  this.playerGuardianAssigned = false;
+  this.currentEnemy = null;
+  this.messages = [];
+  this.selectedBiome = this.biomes[0];
 
-    // Reset boss-related state
-    this.bossesDefeated = 0;
-    this.gameWon = false;
+  // restore default populations if you want a fresh world
+  this.tribes.forEach(t => t.population = t.population || 100);
+  this.animals.forEach(a => a.count = a.count || 50);
+
+  this.bossesDefeated = 0;
+  this.gameWon = false;
+
+  this.updateGuardianEmoji();
+  this.updateEnemyEmoji();
+  this.checkBossAvailability();
+  this.checkBossPhase();
+}
+
+  autoAttackEnemy() {
+  if (!this.guardian || !this.currentEnemy) return;
+
+  // Clear any existing loop
+  if (this.autoAttackInterval) {
+    clearInterval(this.autoAttackInterval);
   }
-  
 
+  this.autoAttackInterval = setInterval(() => {
+    // Stop if no guardian or enemy
+    if (!this.guardian || !this.currentEnemy) {
+      clearInterval(this.autoAttackInterval);
+      this.autoAttackInterval = null;
+      return;
+    }
+
+    // Run one attack round
+    this.attackEnemy();
+
+    // Stop if someone is dead
+    if (this.guardian.hp <= 0 || this.currentEnemy.hp <= 0) {
+      clearInterval(this.autoAttackInterval);
+      this.autoAttackInterval = null;
+    }
+  }, 500); // 0.5 seconds
+}
+autoAttackInterval: any = null;
   searchEnemy() {
     if (!this.guardian) return;
 this.stopGuardianRegen();
@@ -539,48 +570,76 @@ this.stopGuardianRegen();
     return Math.floor(dodgeChance * 100); // convert to %
   }
   saveGame() {
-  const gameState = {
-    guardian: this.guardian,
+  const state = {
+    guardian: this.guardian,                 // includes current HP
     guardianMaxHp: this.guardianMaxHp,
     bossesDefeated: this.bossesDefeated,
+    gameWon: this.gameWon,
     animals: this.animals,
-    lastSaved: Date.now()   // ✅ store current timestamp
+    tribes: this.tribes,
+    selectedBiome: this.selectedBiome,
+    currentEnemy: this.currentEnemy,         // persist ongoing fight (if any)
+    messages: this.messages,
+    lastSaved: Date.now()
   };
-  localStorage.setItem("gameState", JSON.stringify(gameState));
+  localStorage.setItem('gameState', JSON.stringify(state));
 }
 loadGame() {
   const saved = localStorage.getItem("gameState");
-  if (saved) {
+  if (!saved) return;
+
+  try {
     const state = JSON.parse(saved);
 
-    this.guardian = state.guardian;
-    this.guardianMaxHp = state.guardianMaxHp;
-    this.bossesDefeated = state.bossesDefeated;
-    this.animals = state.animals;
+    this.guardian = state.guardian ?? null;
+    this.guardianMaxHp = state.guardianMaxHp ?? (this.guardian?.hp ?? 0);
+    this.bossesDefeated = state.bossesDefeated ?? 0;
+    this.gameWon = !!state.gameWon;
 
+    // Collections / UI state
+    this.animals = state.animals ?? this.animals;
+    this.tribes = state.tribes ?? this.tribes;
+    this.selectedBiome = state.selectedBiome ?? this.selectedBiome;
+    this.currentEnemy = state.currentEnemy ?? null;
+    this.messages = state.messages ?? [];
+
+    // Guardian assignment flag
+    this.playerGuardianAssigned = !!this.guardian;
+
+    // Off-time healing (10 HP / min, never above max)
     if (this.guardian) {
       const now = Date.now();
-      const elapsedMs = now - (state.lastSaved || now);
+      const lastSaved = state.lastSaved ?? now;
+      const elapsedMs = Math.max(0, now - lastSaved);
       const minutesAway = Math.floor(elapsedMs / 60000);
 
       if (minutesAway > 0 && this.guardian.hp < this.guardianMaxHp) {
         const hpRecovered = minutesAway * 10;
-        this.guardian.hp = Math.min(
-          this.guardian.hp + hpRecovered,
-          this.guardianMaxHp
-        );
-        this.addMessage(
-          `🌿 While you were away (${minutesAway} min), your Guardian recovered ${hpRecovered} HP!`
-        );
-      }
-
-      // ✅ restart regen if not full
-      if (this.guardian.hp < this.guardianMaxHp) {
-        this.maybeStartRegen();
+        const before = this.guardian.hp;
+        this.guardian.hp = Math.min(this.guardian.hp + hpRecovered, this.guardianMaxHp);
+        const gained = this.guardian.hp - before;
+        if (gained > 0) {
+          this.addMessage(`🌿 While you were away (${minutesAway} min), your Guardian recovered ${gained} HP!`);
+        }
       }
     }
+
+    // Recompute derived UI state
+    this.updateGuardianEmoji();
+    this.updateEnemyEmoji();
+    this.checkBossAvailability();
+    this.checkBossPhase();
+
+    // Only (re)start regen if we have a guardian, not in combat, and not full HP
+    if (this.guardian && !this.currentEnemy && this.guardian.hp < this.guardianMaxHp) {
+      this.maybeStartRegen();
+    }
+  } catch (e) {
+    console.error("Failed to parse saved game", e);
+    localStorage.removeItem("gameState"); // prevent getting stuck on a bad save
   }
 }
+
 
   guardianEmoji: string = "🛡️";        // default emoji for Guardian
   currentEnemyEmoji: string = "👹";    // default emoji for Enemy

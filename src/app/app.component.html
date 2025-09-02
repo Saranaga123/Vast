@@ -149,6 +149,7 @@
 
     <!-- Attack / Escape Buttons -->
     <button (click)="attackEnemy()" [disabled]="!currentEnemy">⚔️ Attack</button>
+    <button (click)="autoAttackEnemy()" [disabled]="!currentEnemy">⚔️ Auto ⚔️</button>
     <button (click)="escape()" [disabled]="!currentEnemy">🏃 Escape</button>
 
     <!-- Boss Fight -->
