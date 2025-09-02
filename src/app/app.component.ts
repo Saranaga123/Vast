@@ -240,7 +240,7 @@ startGuardianRegen() {
   // Stop any existing intervals
   this.stopGuardianRegen();
 
-  let secondsRemaining = 60;
+  let secondsRemaining = 10;
   this.guardianRegenMessage = `⏱️ Healing in progress... Next +10 HP in ${secondsRemaining}s`;
 
   this.guardianNextHealTimeout = setInterval(() => {
