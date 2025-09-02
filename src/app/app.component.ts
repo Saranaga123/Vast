@@ -539,31 +539,48 @@ this.stopGuardianRegen();
     return Math.floor(dodgeChance * 100); // convert to %
   }
   saveGame() {
-  const state = {
+  const gameState = {
     guardian: this.guardian,
     guardianMaxHp: this.guardianMaxHp,
     bossesDefeated: this.bossesDefeated,
-    gameWon: this.gameWon,
     animals: this.animals,
-    lastHealTime: this.lastHealTime
+    lastSaved: Date.now()   // ✅ store current timestamp
   };
-  localStorage.setItem('gameState', JSON.stringify(state));
+  localStorage.setItem("gameState", JSON.stringify(gameState));
 }
-lastHealTime:any;
 loadGame() {
-  const saved = localStorage.getItem('gameState');
+  const saved = localStorage.getItem("gameState");
   if (saved) {
     const state = JSON.parse(saved);
+
     this.guardian = state.guardian;
     this.guardianMaxHp = state.guardianMaxHp;
     this.bossesDefeated = state.bossesDefeated;
-    this.gameWon = state.gameWon;
     this.animals = state.animals;
-    this.lastHealTime = state.lastHealTime;
-    this.playerGuardianAssigned = !!state.guardian; // ✅ Restore guardian status
+
+    if (this.guardian) {
+      const now = Date.now();
+      const elapsedMs = now - (state.lastSaved || now);
+      const minutesAway = Math.floor(elapsedMs / 60000);
+
+      if (minutesAway > 0 && this.guardian.hp < this.guardianMaxHp) {
+        const hpRecovered = minutesAway * 10;
+        this.guardian.hp = Math.min(
+          this.guardian.hp + hpRecovered,
+          this.guardianMaxHp
+        );
+        this.addMessage(
+          `🌿 While you were away (${minutesAway} min), your Guardian recovered ${hpRecovered} HP!`
+        );
+      }
+
+      // ✅ restart regen if not full
+      if (this.guardian.hp < this.guardianMaxHp) {
+        this.maybeStartRegen();
+      }
+    }
   }
 }
-
 
   guardianEmoji: string = "🛡️";        // default emoji for Guardian
   currentEnemyEmoji: string = "👹";    // default emoji for Enemy
