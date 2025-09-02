@@ -393,7 +393,7 @@ this.stopGuardianRegen();
   absorbStats(enemy: Entity) {
     if (!this.guardian) return;
 
-    const originalHp = (enemy.hpBeforeFight ?? enemy.hp) / 4; // full original HP
+    const originalHp = (enemy.hpBeforeFight ?? enemy.hp) / 3; // full original HP
     this.guardian.hp += originalHp;
     this.guardian.str += enemy.str * 0.01;
     this.guardian.def += enemy.def * 0.01;
