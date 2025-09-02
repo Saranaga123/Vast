@@ -457,7 +457,7 @@ escape() {
   }
   guardian: Entity | null = null;
   resetGame() {
-    sessionStorage.removeItem('lastGuardianSave');
+    localStorage.removeItem('lastGuardianSave');
 
     // Reset local variables
     this.guardian = null;
@@ -526,10 +526,10 @@ this.stopGuardianRegen();
       currentEnemy: this.currentEnemy
     };
 
-    sessionStorage.setItem('lastGuardianSave', JSON.stringify(gameState));
+    localStorage.setItem('lastGuardianSave', JSON.stringify(gameState));
   }
   loadGame() {
-  const saved = sessionStorage.getItem('lastGuardianSave');
+  const saved = localStorage.getItem('lastGuardianSave');
   if (saved) {
     const data = JSON.parse(saved);
     this.guardian = data.guardian;
