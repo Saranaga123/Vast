@@ -19,20 +19,17 @@
       <div class="biome-selection">
         <label for="biome">🌿 Select Biome:</label>
         <select id="biome" [(ngModel)]="selectedBiome">
-          <option *ngFor="let biome of biomes" [value]="biome">{{biome | titlecase}}</option>
+          <option *ngFor="let biome of biomes" [value]="biome">{{ biome | titlecase }}</option>
         </select>
-        <button (click)="searchEnemy()" [disabled]="currentEnemy">🔍 Search</button>
+        <button (click)="searchEnemy()" [disabled]="currentEnemy || !selectedBiome">🔍 Search</button>
       </div>
 
       <!-- Battle Tables: Guardian vs Enemy -->
       <div class="battle-tables" *ngIf="currentEnemy && guardian">
-
         <!-- Guardian Table -->
         <table class="side-table">
           <caption>🛡️ Your Guardian</caption>
-          <tr>
-            <td colspan="2" class="entity-img">{{guardianEmoji}}</td>
-          </tr>
+          <tr><td colspan="2" class="entity-img">{{guardianEmoji}}</td></tr>
           <tr><td>📝 Name:</td><td>{{guardian.name}}</td></tr>
           <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{guardian.str | number:'1.0-2'}}</td></tr>
@@ -40,15 +37,13 @@
           <tr><td>💨 SPD:</td><td>{{guardian.spd | number:'1.0-2'}}</td></tr>
           <tr><td>🔥 Attack →</td><td>{{calculateDamage(guardian, currentEnemy)}}</td></tr>
           <tr><td>💨 Dodge →</td><td>{{calculateDodgeChance(currentEnemy, guardian)}}%</td></tr>
-          <tr><td>🏃 Escape Chance →</td><td>{{calculateDodgeChance(guardian, currentEnemy)}}%</td></tr>
+          <tr><td>🏃 Escape →</td><td>{{calculateDodgeChance(guardian, currentEnemy)}}%</td></tr>
         </table>
 
         <!-- Enemy Table -->
         <table class="side-table">
           <caption>👹 Enemy</caption>
-          <tr>
-            <td colspan="2" class="entity-img">{{currentEnemyEmoji}}</td>
-          </tr>
+          <tr><td colspan="2" class="entity-img">{{currentEnemyEmoji}}</td></tr>
           <tr><td>📝 Name:</td><td>{{currentEnemy.name}}</td></tr>
           <tr><td>❤️ HP:</td><td>{{currentEnemy.hp}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{currentEnemy.str}}</td></tr>
@@ -57,22 +52,13 @@
           <tr><td>🔥 Attack →</td><td>{{calculateDamage(currentEnemy, guardian)}}</td></tr>
           <tr><td>💨 Dodge →</td><td>{{calculateDodgeChance(guardian, currentEnemy)}}%</td></tr>
         </table>
-
       </div>
 
-      <!-- Battle Actions -->
-      <div class="battle-actions" *ngIf="currentEnemy">
-        <button (click)="attackEnemy()">⚔️ Attack</button>
-        <button (click)="escape()">🏃 Escape</button>
-      </div>
-
-      <!-- Guardian Stats Panel (if no enemy) -->
+      <!-- Guardian Stats Panel (No Enemy) -->
       <div class="stats-panel" *ngIf="!currentEnemy && guardian">
         <h3>🛡️ Guardian Stats</h3>
         <table>
-          <tr>
-            <td colspan="2" class="entity-img">{{guardianEmoji}}</td>
-          </tr>
+          <tr><td colspan="2" class="entity-img">{{guardianEmoji}}</td></tr>
           <tr><td>📝 Name:</td><td>{{guardian.name}}</td></tr>
           <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{guardian.str | number:'1.0-2'}}</td></tr>
@@ -80,17 +66,22 @@
           <tr><td>💨 SPD:</td><td>{{guardian.spd | number:'1.0-2'}}</td></tr>
         </table>
 
-        <!-- Boss Button -->  
-         <div *ngIf="guardian.hp >= 100">
-  <p>⚠️ Boss Fights Available! Defeat {{totalBossesToWin - bossesDefeated}} more bosses to win!</p>
-  <button (click)="searchBoss()"  >👹 Fight a Boss</button>
-</div>
-<div *ngIf="gameWon">
-    <p>🎉 You have completed all boss fights! Do you want to restart a new journey?</p>
-    <button (click)="resetGame()">⏳ Start New Journey</button>
-  </div>
-        <!-- <button (click)="confirmReset()">⏳ Rewind Time</button> -->
+        <!-- Boss Info & Button -->
+        <div *ngIf="guardian.hp >= 100 && bossesDefeated < totalBossesToWin">
+          <p>⚠️ Boss Fights Available! Defeat {{ totalBossesToWin - bossesDefeated }} more bosses to win!</p>
+          <button (click)="searchBoss()">👹 Fight a Boss</button>
+        </div>
+
+        <!-- Game Won Panel -->
+        <div *ngIf="gameWon">
+          <p>🎉 You have completed all boss fights! Do you want to restart a new journey?</p>
+          <button (click)="resetGame()">⏳ Start New Journey</button>
+        </div>
+
       </div>
+
+      <!-- Healing Info -->
+      <p *ngIf="guardianRegenMessage">{{ guardianRegenMessage }}</p>
 
       <!-- Messages / Attack Log -->
       <div class="messages" #messagesContainer>
@@ -99,11 +90,10 @@
 
     </main>
 
-    <!-- Population Popup (Bottom) -->
+    <!-- Population Popup -->
     <div class="population-btn" style="text-align:center; margin-top:1vh;">
       <button (click)="showPopulation = true">🌎 View Populations</button>
     </div>
-
     <div class="popup" *ngIf="showPopulation">
       <div class="popup-content">
         <h2>🌍 Current Populations</h2>
@@ -130,9 +120,42 @@
 
   </div>
 </div>
+
+<!-- Guardian Slain Popup -->
 <div class="popup" *ngIf="showGuardianSlainPopup">
   <div class="popup-content">
     <h2>💀 Your Guardian was defeated!</h2> 
     <button (click)="selectNewGuardian()">🛡️ Select New Guardian</button>
   </div>
+</div>
+
+<!-- Fixed Mobile-Friendly Action Panel -->
+<div class="action-panel" *ngIf="playerGuardianAssigned">
+
+  <ng-container *ngIf="guardian; else selectGuardian">
+    
+    <!-- Search Enemy -->
+    <button 
+      (click)="searchEnemy()" 
+      [disabled]="!!currentEnemy || !selectedBiome">
+      🔍 Search
+    </button>
+
+    <!-- Attack / Escape Buttons -->
+    <button (click)="attackEnemy()" [disabled]="!currentEnemy">⚔️ Attack</button>
+    <button (click)="escape()" [disabled]="!currentEnemy">🏃 Escape</button>
+
+    <!-- Boss Fight -->
+    <button 
+      (click)="searchBoss()" 
+      *ngIf="guardian.hp >= 100 && bossesDefeated < totalBossesToWin && !currentEnemy">
+      👹 Boss Fight
+    </button>
+
+  </ng-container>
+
+  <ng-template #selectGuardian>
+    <button (click)="assignRandomGuardian()">🛡️ Select Guardian</button>
+  </ng-template>
+
 </div>
