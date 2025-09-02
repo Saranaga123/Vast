@@ -448,7 +448,32 @@ escape() {
 
   this.saveGame();
 }
+isFullscreen: boolean = false;
 
+toggleFullscreen() {
+  if (!this.isFullscreen) {
+    // Enter fullscreen
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if ((elem as any).webkitRequestFullscreen) {
+      (elem as any).webkitRequestFullscreen(); // Safari
+    } else if ((elem as any).msRequestFullscreen) {
+      (elem as any).msRequestFullscreen(); // IE11
+    }
+    this.isFullscreen = true;
+  } else {
+    // Exit fullscreen
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if ((document as any).webkitExitFullscreen) {
+      (document as any).webkitExitFullscreen();
+    } else if ((document as any).msExitFullscreen) {
+      (document as any).msExitFullscreen();
+    }
+    this.isFullscreen = false;
+  }
+}
   confirmReset() {
     const confirmRewind = confirm("⚠️ Are you sure you want to rewind time? All progress will be lost.");
     if (confirmRewind) {
