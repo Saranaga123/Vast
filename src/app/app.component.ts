@@ -20,16 +20,16 @@ export class AppComponent {
   showPopulation = false;
   playerGuardianAssigned = false;
   bosses: Entity[] = [
-    { name: 'Fire Dragon', hp: 500, str: 30, def: 20, spd: 15,imageUrl: 'assets/Caterpillar.gif' },
-    { name: 'Ice Titan', hp: 400, str: 25, def: 25, spd: 10 ,imageUrl: 'assets/Caterpillar.gif'},
-    { name: 'Shadow Behemoth', hp: 450, str: 28, def: 18, spd: 12 ,imageUrl: 'assets/Caterpillar.gif'},
-    { name: 'Thunder Golem', hp: 350, str: 20, def: 30, spd: 10 ,imageUrl: 'assets/Caterpillar.gif'},
-    { name: 'Ancient Hydra', hp: 500, str: 35, def: 15, spd: 20 ,imageUrl: 'assets/Caterpillar.gif'},
-    { name: 'Earth Colossus', hp: 400, str: 22, def: 28, spd: 10 ,imageUrl: 'assets/Caterpillar.gif'},
-    { name: 'Demon Lord', hp: 500, str: 40, def: 25, spd: 20 ,imageUrl: 'assets/Caterpillar.gif'},
-    { name: 'Lava Serpent', hp: 450, str: 30, def: 20, spd: 25 ,imageUrl: 'assets/Caterpillar.gif'},
-    { name: 'Titanic Kraken', hp: 500, str: 35, def: 15, spd: 20 ,imageUrl: 'assets/Caterpillar.gif'},
-    { name: 'Celestial Phoenix', hp: 400, str: 28, def: 18, spd: 30 ,imageUrl: 'assets/Caterpillar.gif'}
+    { name: 'Fire Dragon', hp: 500, str: 30, def: 20, spd: 15,imageUrl: 'assets/Fire Dragon.webp' },
+    { name: 'Ice Titan', hp: 400, str: 25, def: 25, spd: 10 ,imageUrl: 'assets/Ice Titan.webp'},
+    { name: 'Shadow Behemoth', hp: 450, str: 28, def: 18, spd: 12 ,imageUrl: 'assets/Shadow Behemoth.webp'},
+    { name: 'Thunder Golem', hp: 350, str: 20, def: 30, spd: 10 ,imageUrl: 'assets/Thunder Golem.gif'},
+    { name: 'Ancient Hydra', hp: 500, str: 35, def: 15, spd: 20 ,imageUrl: 'assets/Ancient Hydra.gif'},
+    { name: 'Earth Colossus', hp: 400, str: 22, def: 28, spd: 10 ,imageUrl: 'assets/Earth Colossus.gif'},
+    { name: 'Demon Lord', hp: 500, str: 40, def: 25, spd: 20 ,imageUrl: 'assets/Demon Lord.gif'},
+     
+    { name: 'Titanic Kraken', hp: 500, str: 35, def: 15, spd: 20 ,imageUrl: 'assets/Titanic Kraken.webp'},
+    { name: 'Celestial Phoenix', hp: 400, str: 28, def: 18, spd: 30 ,imageUrl: 'assets/Celestial Phoenix.gif'}
   ];
   bossesDefeated = 0;
   totalBossesToWin: number = 10;
@@ -298,20 +298,22 @@ stopGuardianRegen() {
 
     // Generate a boss
     const bossNames = [
-      "Fire Dragon", "Ice Titan", "Dark Knight", "Ancient Hydra", "Shadow Beast"
+      "Fire Dragon", "Ice Titan", "Shadow Behemoth", "Ancient Hydra", "Shadow Beast","Earth Colossus","Thunder Golem","Demon Lord","Titanic Kraken","Celestial Phoenix"
     ];
-
+ 
     const randomIndex = Math.floor(Math.random() * bossNames.length);
     const bossName = bossNames[randomIndex];
-
+    const bossTemplate = this.bosses.find(b => b.name === bossName);
     // Boss stats: high HP (300-500) and higher attack
+    console.log ("bossTemplate",bossTemplate)
     const boss: Entity = {
       name: bossName,
       hp: Math.floor(300 + Math.random() * 200),
       str: Math.floor(25 + Math.random() * 90),
       def: Math.floor(15 + Math.random() * 80),
       spd: Math.floor(15 + Math.random() * 75),
-      isBoss: true
+      isBoss: true,
+      imageUrl: bossTemplate?.imageUrl ?? ''
     };
 
     this.currentEnemy = boss;

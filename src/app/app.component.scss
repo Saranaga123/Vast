@@ -84,7 +84,7 @@ table {
 .messages {
   width: 90%;
   max-width: 600px;
-  max-height: 25vh;
+  max-height: 20vh;
   overflow-y: auto;
   background-color: rgba(0,0,0,0.3);
   padding: 0.5vh 0.5vw;
@@ -348,3 +348,30 @@ button:active {
   }
 }
 
+#biome {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 2px solid #8b5cf6;
+  background-color: #1e1e2f;
+  color: #f0f0f0;
+  font-size: 1rem;
+  font-weight: bold;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none; /* Remove default arrow */
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+}
+
+/* Add a down arrow using Unicode */
+#biome::after {
+  content: '▾'; /* Unicode downward triangle */
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #f0f0f0;
+  font-size: 0.9rem;
+}

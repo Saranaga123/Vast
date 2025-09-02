@@ -9,8 +9,7 @@
   <div *ngIf="playerGuardianAssigned">
 
     <!-- Header -->
-    <header>
-      <br> 
+    <header> 
       <span>🗡️ The Last Guardian 🐉</span>
     </header>
     <button class="fullscreen-btn" (click)="toggleFullscreen()">
@@ -22,11 +21,11 @@
 
       <!-- Biome Selection -->
       <div class="biome-selection">
-        <label for="biome">🌿 Select Biome:</label>
+        <label for="biome">🌿 Select Biome: </label>
         <select id="biome" [(ngModel)]="selectedBiome">
           <option *ngFor="let biome of biomes" [value]="biome">{{ biome | titlecase }}</option>
         </select>
-        <button (click)="searchEnemy()" [disabled]="currentEnemy || !selectedBiome">🔍 Search</button>
+        <!-- <button (click)="searchEnemy()" [disabled]="currentEnemy || !selectedBiome">🔍 Search</button> -->
       </div>
 
       <!-- Battle Tables: Guardian vs Enemy -->
@@ -34,28 +33,28 @@
         <!-- Guardian Table -->
         <table class="side-table">
           <caption>🛡️ Your Guardian</caption>
-          <tr><td colspan="2" class="entity-img"><img [src]="guardian.imageUrl" [alt]="guardian.name" class="guardian-gif" style="height:70px"> </td></tr>
-          <tr> <td colspan="2" >{{guardian.name}} - {{guardian.imageUrl}}</td></tr>
+          <tr><td colspan="2" class="entity-img" style="text-align: center;"><img [src]="guardian.imageUrl" [alt]="guardian.name" class="guardian-gif" style="height:70px"> </td></tr>
+          <tr> <td colspan="2" ><span *ngIf="guardian.hp >= 300 && guardian.hp <= 500 ">Celestial </span><span *ngIf="guardian.hp >= 500  ">Demigod </span>{{guardian.name}}</td></tr>
           <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{guardian.str | number:'1.0-2'}}</td></tr>
           <tr><td>🛡️ DEF:</td><td>{{guardian.def | number:'1.0-2'}}</td></tr>
           <tr><td>💨 SPD:</td><td>{{guardian.spd | number:'1.0-2'}}</td></tr>
-          <tr><td>🔥 Attack →</td><td>{{calculateDamage(guardian, currentEnemy)}}</td></tr>
-          <tr><td>💨 Dodge →</td><td>{{calculateDodgeChance(currentEnemy, guardian)}}%</td></tr>
-          <tr><td>🏃 Escape →</td><td>{{calculateDodgeChance(guardian, currentEnemy)}}%</td></tr>
+          <tr><td>🔥 Attack</td><td>{{calculateDamage(guardian, currentEnemy)}}</td></tr>
+          <tr><td>💨 Dodge</td><td>{{calculateDodgeChance(currentEnemy, guardian)}}%</td></tr>
+          <tr><td>🏃 Escape</td><td>{{calculateDodgeChance(guardian, currentEnemy)}}%</td></tr>
         </table>
 
         <!-- Enemy Table -->
         <table class="side-table">
           <caption>👹 Enemy</caption>
-          <tr><td colspan="2" class="entity-img"><img [src]="currentEnemy.imageUrl" [alt]="currentEnemyEmoji" class="enemy-gif" style="height:70px"/></td></tr>
+          <tr><td colspan="2" class="entity-img" style="text-align: center !important;"><img [src]="currentEnemy.imageUrl" [alt]="currentEnemyEmoji" class="enemy-gif" style="height:70px"/></td></tr>
           <tr> <td colspan="2">{{currentEnemy.name}}</td></tr>
           <tr><td>❤️ HP:</td><td>{{currentEnemy.hp}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{currentEnemy.str}}</td></tr>
           <tr><td>🛡️ DEF:</td><td>{{currentEnemy.def}}</td></tr>
           <tr><td>💨 SPD:</td><td>{{currentEnemy.spd}}</td></tr>
-          <tr><td>🔥 Attack →</td><td>{{calculateDamage(currentEnemy, guardian)}}</td></tr>
-          <tr><td>💨 Dodge →</td><td>{{calculateDodgeChance(guardian, currentEnemy)}}%</td></tr>
+          <tr><td>🔥 Attack</td><td>{{calculateDamage(currentEnemy, guardian)}}</td></tr>
+          <tr><td>💨 Dodge</td><td>{{calculateDodgeChance(guardian, currentEnemy)}}%</td></tr>
         </table>
       </div>
 
@@ -63,8 +62,8 @@
       <div class="stats-panel" *ngIf="!currentEnemy && guardian">
         <h3>🛡️ Guardian Stats</h3>
         <table>
-          <tr><td colspan="2" class="entity-img"><img [src]="guardian.imageUrl" [alt]="guardianEmoji" class="enemy-gif" style="height:70px"/> </td></tr>
-          <tr><td>📝 Name:</td><td>{{guardian.name}}</td></tr>
+          <tr><td colspan="2" class="entity-img" style="text-align: center;"><img [src]="guardian.imageUrl" [alt]="guardianEmoji" class="enemy-gif" style="height:70px; "/> </td></tr>
+          <tr><td>📝 Name:</td><td><span *ngIf="guardian.hp >= 300 && guardian.hp <= 500 ">Celestial </span><span *ngIf="guardian.hp >= 500  ">Demigod </span>{{guardian.name}}</td></tr>
           <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{guardian.str | number:'1.0-2'}}</td></tr>
           <tr><td>🛡️ DEF:</td><td>{{guardian.def | number:'1.0-2'}}</td></tr>
@@ -149,11 +148,11 @@
     <button (click)="autoAttackEnemy()" [disabled]="!currentEnemy">⚔️ Auto ⚔️</button>
     <button (click)="escape()" [disabled]="!currentEnemy">🏃 Escape</button>
 
-    <button 
+    <!-- <button 
       (click)="searchBoss()" 
       *ngIf="guardian.hp >= 100 && bossesDefeated < totalBossesToWin && !currentEnemy">
       👹 Boss Fight
-    </button>
+    </button> -->
   </ng-container>
 
   <ng-template #selectGuardian>
