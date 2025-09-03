@@ -219,6 +219,7 @@ enemyEmojis: { [key: string]: string } = {
 }
 skillPoints: number = 0;
 spendSkillPoint(stat: "str" | "def" | "spd") {
+  this.playclick()
   if (!this.guardian || this.skillPoints <= 0) return;
 
   switch (stat) {
