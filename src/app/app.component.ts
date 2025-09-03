@@ -203,6 +203,7 @@ enemyEmojis: { [key: string]: string } = {
   // Messages
   messages: string[] = [];
   assignRandomGuardian() {
+    this.playclick()
     if (!this.bgMusic) {
     this.playBackgroundMusic();
   }
@@ -383,6 +384,14 @@ playRandomAttackSound() {
   const audio = new Audio(this.attackSounds[randomIndex]);
   audio.play();
 }
+playclick(){
+  const audio = new Audio("assets/sounds/btn.mp3");
+  audio.play();
+}
+playwalk(){
+  const audio = new Audio("assets/sounds/walk.mp3");
+  audio.play();
+}
 attacke1: boolean = false;
 attacke2: boolean = false;
 attacke3: boolean = false;
@@ -523,6 +532,7 @@ maybeStartRegen() {
   }
 }
 escape() {
+  this.playwalk()
   if (!this.currentEnemy || !this.guardian) return;
 
   // Stop healing during combat
@@ -561,6 +571,7 @@ escape() {
 isFullscreen: boolean = false;
 
 toggleFullscreen() {
+  this.playclick()
   if (!this.isFullscreen) {
     const elem = document.documentElement;
     if (elem.requestFullscreen) {
@@ -639,6 +650,7 @@ toggleFullscreen() {
 }
 autoAttackInterval: any = null;
   searchEnemy() {
+    this.playclick()
     if (!this.guardian) return;
 this.stopGuardianRegen();
     const possibleEnemies = this.biomeEnemies[this.selectedBiome] || [];
