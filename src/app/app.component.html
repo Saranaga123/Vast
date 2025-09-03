@@ -64,7 +64,7 @@
         <table>
           <tr><td colspan="2" class="entity-img" style="text-align: center;"><img [src]="guardian.imageUrl" [alt]="guardianEmoji" class="enemy-gif" style="height:70px; "/> </td></tr>
           <tr><td>📝 Name:</td><td><span *ngIf="guardian.hp >= 300 && guardian.hp <= 500 ">Celestial </span><span *ngIf="guardian.hp >= 500  ">Demigod </span>{{guardian.name}}</td></tr>
-          <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}}</td></tr>
+          <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}}/{{guardianMaxHp}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{guardian.str | number:'1.0-2'}}</td></tr>
           <tr><td>🛡️ DEF:</td><td>{{guardian.def | number:'1.0-2'}}</td></tr>
           <tr><td>💨 SPD:</td><td>{{guardian.spd | number:'1.0-2'}}</td></tr>

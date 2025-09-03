@@ -298,7 +298,7 @@ stopGuardianRegen() {
 
     // Generate a boss
     const bossNames = [
-      "Fire Dragon", "Ice Titan", "Shadow Behemoth", "Ancient Hydra", "Shadow Beast","Earth Colossus","Thunder Golem","Demon Lord","Titanic Kraken","Celestial Phoenix"
+      "Fire Dragon", "Ice Titan", "Shadow Behemoth", "Ancient Hydra","Earth Colossus","Thunder Golem","Demon Lord","Titanic Kraken","Celestial Phoenix"
     ];
  
     const randomIndex = Math.floor(Math.random() * bossNames.length);
