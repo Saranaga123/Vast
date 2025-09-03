@@ -203,6 +203,7 @@ enemyEmojis: { [key: string]: string } = {
   // Messages
   messages: string[] = [];
   assignRandomGuardian() {
+    this.skillPoints=0
   const randomIndex = Math.floor(Math.random() * this.guardians.length);
   this.guardian = { ...this.guardians[randomIndex] };
   this.guardianMaxHp = this.guardian.hp; // ✅ ensures max HP is tracked
@@ -342,10 +343,19 @@ stopGuardianRegen() {
     this.messages.push(msg);
     setTimeout(() => this.scrollToBottom(), 0);
   }
-
+attackSounds = [
+  'assets/sounds/attack1.mp3',
+  'assets/sounds/attack2.mp3',
+  'assets/sounds/attack3.mp3'
+];
+playRandomAttackSound() {
+  const randomIndex = Math.floor(Math.random() * this.attackSounds.length);
+  const audio = new Audio(this.attackSounds[randomIndex]);
+  audio.play();
+}
 attackEnemy() {
   if (!this.currentEnemy || !this.guardian) return;
-
+this.playRandomAttackSound();
   // Stop healing during combat
   this.stopGuardianRegen();
 
@@ -428,11 +438,11 @@ attackEnemy() {
   absorbStats(enemy: Entity) {
   if (!this.guardian) return;
 
-  const originalHp = (enemy.hpBeforeFight ?? enemy.hp) / 3; // full original HP
+  const originalHp = (enemy.hpBeforeFight ?? enemy.hp) / 4; // full original HP
   this.guardian.hp += originalHp;
-  this.guardian.str += enemy.str * 0.01;
-  this.guardian.def += enemy.def * 0.01;
-  this.guardian.spd += enemy.spd * 0.01;
+  this.guardian.str += enemy.str * 0.1;
+  this.guardian.def += enemy.def * 0.1;
+  this.guardian.spd += enemy.spd * 0.1;
 
   // ✅ Award 1 skill point per absorbed enemy
   // this.skillPoints = (this.skillPoints || 0) + 1;

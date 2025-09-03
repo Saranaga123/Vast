@@ -1,8 +1,74 @@
-<div class="app-container">
-
-  <!-- Guardian Selection -->
-  <div class="guardian-selection" *ngIf="!playerGuardianAssigned">
-    <button (click)="assignRandomGuardian()">🛡️ Select Your Guardian</button>
+<div class="app-container"> 
+  <!-- forest -->
+    <div *ngIf="selectedBiome=='plains'" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('assets/4.gif');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.2; /* make it faint so UI is visible */ 
+      z-index: 90;
+    ">
+    </div> 
+  <div *ngIf="selectedBiome=='jungle'" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('assets/a.gif');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.2; /* make it faint so UI is visible */  
+      z-index: 90;
+    ">
+    </div>
+    <div *ngIf="selectedBiome=='forest'" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('assets/1.gif');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.2; /* make it faint so UI is visible */  
+      z-index: 90;
+    ">
+    </div>
+    <div *ngIf="selectedBiome=='swamp'" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('assets/9.gif');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.2; /* make it faint so UI is visible */  
+      z-index: 90;
+    ">
+    </div>
+    <div *ngIf="selectedBiome=='mountains'" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('assets/7.gif');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.2; /* make it faint so UI is visible */  
+      z-index: 90;
+    ">
+    </div>
+     
+<div style="z-index: 100;">
+<div class="guardian-selection" *ngIf="!playerGuardianAssigned">
+    <button (click)="assignRandomGuardian()">🛡️ Select Your Guardian ⚔️</button>
   </div>
 
   <!-- Main Game UI -->
@@ -134,8 +200,8 @@
 <div class="popup" *ngIf="showGuardianSlainPopup">
   <div class="popup-content">
     <h2>💀 Your Guardian was defeated!</h2> 
-    <img src="assets/game over.gif"   style="height:360px"><br>
-    <button (click)="selectNewGuardian()">🛡️ Rewind Time </button>
+    <img src="assets/d.gif"   style="width:100%"><br>
+    <button (click)="selectNewGuardian()" style="margin-left: 25% !important;">🛡️ Rewind Time </button>
   </div>
 </div>
 
@@ -158,4 +224,6 @@
   <ng-template #selectGuardian>
     <button (click)="assignRandomGuardian()">🛡️ Select Guardian</button>
   </ng-template>
+</div> 
+
 </div>
