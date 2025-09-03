@@ -65,7 +65,54 @@
       z-index: 90;
     ">
     </div>
-     
+     <div *ngIf="attacke1" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('assets/flash-effect1.gif');
+      background-size: cover;
+      background-position: center; 
+      z-index: 101;
+    ">
+    </div> 
+    <div *ngIf="attacke2" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('assets/flash-effect2.gif');
+      background-size: cover;
+      background-position: center; 
+      z-index: 101;
+    ">
+    </div> 
+    <div *ngIf="attacke3" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('assets/flash-effect3.gif');
+      background-size: cover;
+      background-position: center; 
+      z-index: 101;
+    ">
+    </div> 
+    <div *ngIf="attacke4" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('assets/flash-effect4.gif');
+      background-size: cover;
+      background-position: center; 
+      z-index: 101;
+    ">
+    </div> 
 <div style="z-index: 100;">
 <div class="guardian-selection" *ngIf="!playerGuardianAssigned">
     <button (click)="assignRandomGuardian()">🛡️ Select Your Guardian ⚔️</button>
@@ -113,7 +160,7 @@
         <!-- Enemy Table -->
         <table class="side-table">
           <caption>👹 Enemy</caption>
-          <tr><td colspan="2" class="entity-img" style="text-align: center !important;"><img [src]="currentEnemy.imageUrl" [alt]="currentEnemyEmoji" class="enemy-gif" style="height:70px"/></td></tr>
+          <tr><td colspan="2" class="entity-img" style="text-align: center !important;"><img [src]="currentEnemy.imageUrl" [alt]="currentEnemyEmoji" class="enemy-gif" style="height:69px"/></td></tr>
           <tr> <td colspan="2">{{currentEnemy.name}}</td></tr>
           <tr><td>❤️ HP:</td><td>{{currentEnemy.hp}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{currentEnemy.str}}</td></tr>

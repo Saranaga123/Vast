@@ -63,7 +63,7 @@ export class AppComponent {
   { name: 'Human Warrior', hp: 50, str: 20, def: 15, spd: 20, imageUrl: 'assets/Human Warrior.gif' },
   { name: 'Human Knight', hp: 55, str: 25, def: 20, spd: 15, imageUrl: 'assets/Human Knight.gif' },
   { name: 'Elf Archer', hp: 35, str: 15, def: 10, spd: 40, imageUrl: 'assets/Elf Archer.gif' },
-  { name: 'Elf Mage', hp: 30, str: 18, def: 8, spd: 35, imageUrl: 'assets/Elf Mage.gif' },
+  { name: 'Elf Mage', hp: 30, str: 18, def: 8, spd: 35, imageUrl: 'assets/Elf Mage.webp' },
   { name: 'Orc Fighter', hp: 60, str: 25, def: 20, spd: 15, imageUrl: 'assets/Orc Fighter.gif' },
   { name: 'Orc Shaman', hp: 50, str: 20, def: 15, spd: 20, imageUrl: 'assets/Orc Shaman.gif' },
   { name: 'Beast People Hunter', hp: 45, str: 18, def: 15, spd: 25, imageUrl: 'assets/Beast People Hunter.gif' },
@@ -203,6 +203,9 @@ enemyEmojis: { [key: string]: string } = {
   // Messages
   messages: string[] = [];
   assignRandomGuardian() {
+    if (!this.bgMusic) {
+    this.playBackgroundMusic();
+  }
     this.skillPoints=0
   const randomIndex = Math.floor(Math.random() * this.guardians.length);
   this.guardian = { ...this.guardians[randomIndex] };
@@ -332,7 +335,28 @@ stopGuardianRegen() {
 
   ngOnInit() {
     this.loadGame();
+    this.playBackgroundMusic();
   }
+  bgMusic: HTMLAudioElement | null = null;
+ 
+
+playBackgroundMusic() {
+  this.bgMusic = new Audio('assets/sounds/bg-music.mp3');
+  this.bgMusic.loop = true;       // 🔁 infinite loop
+  // this.bgMusic.volume = 0.5;      // 🎵 set to 50% volume
+  this.bgMusic.play().catch(err => {
+    console.warn("Autoplay blocked by browser, will play on first interaction", err);
+  });
+}
+
+stopBackgroundMusic() {
+  if (this.bgMusic) {
+    this.bgMusic.pause();
+    this.bgMusic.currentTime = 0;
+    this.bgMusic = null;
+  }
+}
+
   scrollToBottom() {
     try {
       this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
@@ -348,13 +372,47 @@ attackSounds = [
   'assets/sounds/attack2.mp3',
   'assets/sounds/attack3.mp3'
 ];
+attackEffects = [
+  '1',
+  '2',
+  '3',
+  '4'
+];
 playRandomAttackSound() {
   const randomIndex = Math.floor(Math.random() * this.attackSounds.length);
   const audio = new Audio(this.attackSounds[randomIndex]);
   audio.play();
 }
+attacke1: boolean = false;
+attacke2: boolean = false;
+attacke3: boolean = false;
+attacke4: boolean = false;
+
+showeffect() {
+  // Pick random index between 1 and 4
+  const randomIndex = Math.floor(Math.random() * 4) + 1;
+
+  // Reset all first
+  this.attacke1 = this.attacke2 = this.attacke3 = this.attacke4 = false;
+
+  // Activate one effect
+  if (randomIndex === 1) this.attacke1 = true;
+  if (randomIndex === 2) this.attacke2 = true;
+  if (randomIndex === 3) this.attacke3 = true;
+  if (randomIndex === 4) this.attacke4 = true;
+
+  // Reset after 0.5s
+  setTimeout(() => {
+    this.attacke1 = this.attacke2 = this.attacke3 = this.attacke4 = false;
+  }, 500);
+}
 attackEnemy() {
+  if (!this.bgMusic) {
+    this.playBackgroundMusic();
+  }
   if (!this.currentEnemy || !this.guardian) return;
+  this.showeffect()
+
 this.playRandomAttackSound();
   // Stop healing during combat
   this.stopGuardianRegen();
