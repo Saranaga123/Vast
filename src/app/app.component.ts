@@ -352,7 +352,7 @@ playBackgroundMusic() {
 stopBackgroundMusic() {
   if (this.bgMusic) {
     this.bgMusic.pause();
-    this.bgMusic.currentTime = 0;
+    this.bgMusic.currentTime = 0; 
     this.bgMusic = null;
   }
 }
