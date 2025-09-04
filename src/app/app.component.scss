@@ -375,3 +375,31 @@ button:active {
   color: #f0f0f0;
   font-size: 0.9rem;
 }
+/* Base Guardian image */
+.guardian-gif {
+  transition: filter 0.3s ease-in-out;
+}
+
+/* Celestial glow (blueish/white) */
+.celestial-glow {
+  filter: drop-shadow(0 0 10px #4fc3f7) drop-shadow(0 0 20px #81d4fa);
+  animation: celestialPulse 2s infinite alternate;
+}
+
+/* Demigod glow (golden/fire) */
+.demigod-glow {
+  filter: drop-shadow(0 0 12px #ffca28) drop-shadow(0 0 25px #ffb300) drop-shadow(0 0 40px #ff6f00);
+  animation: demigodPulse 1.5s infinite alternate;
+}
+
+/* Celestial animation */
+@keyframes celestialPulse {
+  from { filter: drop-shadow(0 0 8px #4fc3f7) drop-shadow(0 0 15px #81d4fa); }
+  to   { filter: drop-shadow(0 0 20px #80deea) drop-shadow(0 0 40px #b3e5fc); }
+}
+
+/* Demigod animation */
+@keyframes demigodPulse {
+  from { filter: drop-shadow(0 0 12px #ffca28) drop-shadow(0 0 20px #ffb300) drop-shadow(0 0 30px #ff6f00); }
+  to   { filter: drop-shadow(0 0 20px #fff176) drop-shadow(0 0 35px #ffd54f) drop-shadow(0 0 50px #ff9100); }
+}
