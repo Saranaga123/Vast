@@ -508,19 +508,10 @@ this.playRandomAttackSound();
 
   const originalHp = (enemy.hpBeforeFight ?? enemy.hp) / 4; // full original HP
   this.guardian.hp += originalHp;
-  this.guardian.str += enemy.str * 0.1;
-  this.guardian.def += enemy.def * 0.1;
-  this.guardian.spd += enemy.spd * 0.1;
 
-  // ✅ Award 1 skill point per absorbed enemy
-  // this.skillPoints = (this.skillPoints || 0) + 1;
 
-  // Show absorbed stats in messages
-  this.addMessage(`✨ You absorbed ${enemy.name}'s strength!`);
+  this.addMessage(`✨ You absorbed ${enemy.name}!`);
   this.addMessage(`❤️ HP +${originalHp.toFixed(2)}`);
-  this.addMessage(`⚔️ STR +${(enemy.str * 0.01).toFixed(2)}`);
-  this.addMessage(`🛡️ DEF +${(enemy.def * 0.01).toFixed(2)}`);
-  this.addMessage(`💨 SPD +${(enemy.spd * 0.01).toFixed(2)}`);
   this.addMessage(`⚡ You gained +1 Skill Point! (Total: ${this.skillPoints})`);
 
   this.saveGame(); // ✅ keep progress safe
