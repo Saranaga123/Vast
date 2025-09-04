@@ -9,6 +9,7 @@ interface Entity {
   hpBeforeFight?: number; // optional property
   isBoss?: boolean;
   imageUrl?: any;
+  evolutionLevel?: number;
 }
 
 @Component({
@@ -32,6 +33,8 @@ export class AppComponent {
     { name: 'Celestial Phoenix', hp: 400, str: 28, def: 18, spd: 30 ,imageUrl: 'assets/Celestial Phoenix.gif'}
   ];
   bossesDefeated = 0;
+
+
   totalBossesToWin: number = 10;
   bossAvailable: boolean = false; // to toggle visual warning
   enemies = [
@@ -196,28 +199,75 @@ enemyEmojis: { [key: string]: string } = {
 
   // Guardian stats
 
+ 
 
   // Current enemy
   currentEnemy: Entity | null = null;
+  evolutionStages = [
+    { title: "Normal", hp: 0, bonus: {} },
+    { title: "Strong", hp: 150, bonus: { str: 4 } },
+    { title: "Celestial", hp: 300, bonus: { str: 2,def: 2, spd: 5 } },
+    { title: "Legendary", hp: 500, bonus: { str: 5, def: 5 } },
+    { title: "Demigod", hp: 800, bonus: { str: 5, def: 5, spd: 5 } }
+  ];
+  checkEvolution() {
+  if (!this.guardian) return; // ✅ null guard
 
-  // Messages
-  messages: string[] = [];
-  assignRandomGuardian() {
-    this.playclick()
-    this.playselected()
-    if (!this.bgMusic) {
+  for (let i = this.evolutionStages.length - 1; i >= 0; i--) {
+    const stage = this.evolutionStages[i];
+    if (this.guardian.hp >= stage.hp && (this.guardian.evolutionLevel ?? 0) < i) {
+      this.guardian.evolutionLevel = i;
+      this.applyEvolutionBonus(stage.bonus);
+      this.addMessage(`✨ Your Guardian evolved into <strong>${stage.title}</strong>!`);
+      break;
+    }
+  }
+}
+
+applyEvolutionBonus(bonus: any) {
+  if (!this.guardian) return; // ✅ null guard
+  if (bonus.str) this.guardian.str += bonus.str;
+  if (bonus.def) this.guardian.def += bonus.def;
+  if (bonus.spd) this.guardian.spd += bonus.spd;
+}
+
+// Messages
+messages: string[] = [];
+
+assignRandomGuardian() {
+  this.playclick();
+  this.playselected();
+
+  if (!this.bgMusic) {
     this.playBackgroundMusic();
   }
-    this.skillPoints=0
+
+  this.skillPoints = 0;
+
   const randomIndex = Math.floor(Math.random() * this.guardians.length);
-  this.guardian = { ...this.guardians[randomIndex] };
-  this.guardianMaxHp = this.guardian.hp; // ✅ ensures max HP is tracked
+  this.guardian = { ...this.guardians[randomIndex], evolutionLevel: 0 }; // ✅ initialize evolutionLevel here
+  this.guardianMaxHp = this.guardian.hp;
   this.playerGuardianAssigned = true;
+
   this.addMessage(`You have been assigned the guardian: ${this.guardian.name}!`);
   this.startGuardianRegen();
   this.updateGuardianEmoji();
   this.saveGame();
 }
+
+getGuardianTitle(): string {
+  if (!this.guardian) return "No Guardian"; // ✅ safe default
+  return this.evolutionStages[this.guardian.evolutionLevel ?? 0].title;
+}
+
+ 
+getNextEvolution(): { title: string, hp: number, bonus: any } | null {
+  if (!this.guardian) return null;
+  const nextLevel = (this.guardian.evolutionLevel ?? 0) + 1;
+  return this.evolutionStages[nextLevel] || null;
+}
+
+
 skillPoints: number = 0;
 spendSkillPoint(stat: "str" | "def" | "spd") {
   this.playclick()
@@ -239,6 +289,8 @@ spendSkillPoint(stat: "str" | "def" | "spd") {
   this.addMessage(`⚡ You spent 1 Skill Point on ${stat.toUpperCase()}.`);
   this.saveGame();
 }
+ 
+
   gameOver() {
     if (this.guardianRegenInterval) clearInterval(this.guardianRegenInterval);
     this.addMessage("💀 Game Over!");
@@ -347,7 +399,7 @@ stopGuardianRegen() {
 playBackgroundMusic() {
   this.bgMusic = new Audio('assets/sounds/bg-music.mp3');
   this.bgMusic.loop = true;       // 🔁 infinite loop
-  // this.bgMusic.volume = 0.1;      // 🎵 set to 50% volume
+  this.bgMusic.volume = 0.1;      // 🎵 set to 50% volume
   this.bgMusic.play().catch(err => {
     console.warn("Autoplay blocked by browser, will play on first interaction", err);
   });

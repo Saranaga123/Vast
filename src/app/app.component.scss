@@ -421,3 +421,19 @@ button:active {
   from { filter: drop-shadow(0 0 15px #ffca28) drop-shadow(0 0 25px #ff6f00); }
   to   { filter: drop-shadow(0 0 30px #fff176) drop-shadow(0 0 50px #ffb300); }
 }
+.evolution-info {
+  text-align: center;
+  font-size: 0.9em;
+  padding-top: 6px;
+  color: #ccc;
+  font-style: italic;
+}
+
+.evolution-info strong {
+  color: #ffd54f; /* gold highlight for next title */
+}
+
+.evolution-info .hp-value {
+  color: #42a5f5; /* bright blue for HP number */
+  font-weight: bold;
+}

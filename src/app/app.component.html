@@ -158,18 +158,14 @@
                   'glow-legendary': guardian.hp >= 500 && guardian.hp < 800,
                   'glow-demigod': guardian.hp >= 800
                 }"
-                style="height:70px"
+                style="height:68px"
               >
             </td>
           </tr>
 
           <tr>
             <td colspan="2">
-              <span *ngIf="guardian.hp >= 150 && guardian.hp < 300">Strong </span>
-              <span *ngIf="guardian.hp >= 300 && guardian.hp < 500">Celestial </span>
-              <span *ngIf="guardian.hp >= 500 && guardian.hp < 800">Legendary </span>
-              <span *ngIf="guardian.hp >= 800">Demigod </span>
-              {{guardian.name}}
+              {{ getGuardianTitle() }} {{ guardian.name }}
             </td>
           </tr>
           <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}}</td></tr>
@@ -218,17 +214,32 @@
 
           <tr>
             <td colspan="2">
-              <span *ngIf="guardian.hp >= 150 && guardian.hp < 300">Strong </span>
-              <span *ngIf="guardian.hp >= 300 && guardian.hp < 500">Celestial </span>
-              <span *ngIf="guardian.hp >= 500 && guardian.hp < 800">Legendary </span>
-              <span *ngIf="guardian.hp >= 800">Demigod </span>
-              {{guardian.name}}
+              {{ getGuardianTitle() }} {{ guardian.name }}
             </td>
           </tr>
           <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}}/{{guardianMaxHp}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{guardian.str | number:'1.0-2'}}</td></tr>
           <tr><td>🛡️ DEF:</td><td>{{guardian.def | number:'1.0-2'}}</td></tr>
           <tr><td>💨 SPD:</td><td>{{guardian.spd | number:'1.0-2'}}</td></tr>
+          <tr *ngIf="getNextEvolution() as next">
+            <td colspan="2" class="evolution-info"> 
+              <div *ngIf="getNextEvolution() as next">
+                <p>
+                  🌟 Next Evolution: <strong>{{ next.title }}</strong> at 
+                  <span class="hp-highlight">{{ next.hp }} HP</span>
+                </p>
+                <p>
+                  🎁 Bonus: 
+                  <span *ngIf="next.bonus.str">⚔️ +{{ next.bonus.str }} STR </span>
+                  <span *ngIf="next.bonus.def">🛡️ +{{ next.bonus.def }} DEF </span>
+                  <span *ngIf="next.bonus.spd">💨 +{{ next.bonus.spd }} SPD </span>
+                </p>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="!getNextEvolution()">
+            <td colspan="2" class="evolution-info">🌟 Max Evolution Achieved!</td>
+          </tr>
         </table>
 <!-- 🎯 Skill Points Panel -->
 <div class="skills-panel" *ngIf="skillPoints > 0" style="margin-top:8px;">
@@ -238,7 +249,7 @@
   <button (click)="spendSkillPoint('spd')">💨 + SPD</button>
 </div>
         <!-- Boss Info & Button -->
-        <div *ngIf="guardian.hp >= 100 && bossesDefeated < totalBossesToWin">
+        <div *ngIf="guardian.hp >= 300 && bossesDefeated < totalBossesToWin">
           <p>⚠️ Boss Fights Available! Defeat {{ totalBossesToWin - bossesDefeated }} more bosses to win!</p>
           <button (click)="searchBoss()">👹 Fight a Boss</button>
         </div>
