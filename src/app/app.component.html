@@ -123,7 +123,7 @@
 
     <!-- Header -->
     <header> 
-      <span>🗡️ The Last Guardian 🐉</span>
+      <span>🗡️ The Last Guardian 🛡️</span>
     </header>
     <button class="fullscreen-btn" (click)="toggleFullscreen()">
       <span *ngIf="!isFullscreen">🗖</span>
@@ -153,15 +153,25 @@
                 [alt]="guardian.name" 
                 class="guardian-gif"
                 [ngClass]="{
-                  'celestial-glow': guardian.hp >= 300 && guardian.hp <= 500,
-                  'demigod-glow': guardian.hp > 500
+                  'glow-strong': guardian.hp >= 150 && guardian.hp < 300,
+                  'glow-celestial': guardian.hp >= 300 && guardian.hp < 500,
+                  'glow-legendary': guardian.hp >= 500 && guardian.hp < 800,
+                  'glow-demigod': guardian.hp >= 800
                 }"
                 style="height:70px"
               >
             </td>
           </tr>
 
-          <tr> <td colspan="2" ><span *ngIf="guardian.hp >= 300 && guardian.hp <= 500 ">Celestial </span><span *ngIf="guardian.hp >= 500  ">Demigod </span>{{guardian.name}}</td></tr>
+          <tr>
+            <td colspan="2">
+              <span *ngIf="guardian.hp >= 150 && guardian.hp < 300">Strong </span>
+              <span *ngIf="guardian.hp >= 300 && guardian.hp < 500">Celestial </span>
+              <span *ngIf="guardian.hp >= 500 && guardian.hp < 800">Legendary </span>
+              <span *ngIf="guardian.hp >= 800">Demigod </span>
+              {{guardian.name}}
+            </td>
+          </tr>
           <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{guardian.str | number:'1.0-2'}}</td></tr>
           <tr><td>🛡️ DEF:</td><td>{{guardian.def | number:'1.0-2'}}</td></tr>
@@ -189,21 +199,32 @@
       <div class="stats-panel" *ngIf="!currentEnemy && guardian">
         <h3>🛡️ Guardian Stats</h3>
         <table>
-          <tr>          
+          <tr>
             <td colspan="2" class="entity-img" style="text-align: center;">
               <img 
                 [src]="guardian.imageUrl" 
                 [alt]="guardian.name" 
                 class="guardian-gif"
                 [ngClass]="{
-                  'celestial-glow': guardian.hp >= 300 && guardian.hp <= 500,
-                  'demigod-glow': guardian.hp > 500
+                  'glow-strong': guardian.hp >= 150 && guardian.hp < 300,
+                  'glow-celestial': guardian.hp >= 300 && guardian.hp < 500,
+                  'glow-legendary': guardian.hp >= 500 && guardian.hp < 800,
+                  'glow-demigod': guardian.hp >= 800
                 }"
                 style="height:70px"
               >
             </td>
           </tr>
-          <tr><td>📝 Name:</td><td><span *ngIf="guardian.hp >= 300 && guardian.hp <= 500 ">Celestial </span><span *ngIf="guardian.hp >= 500  ">Demigod </span>{{guardian.name}}</td></tr>
+
+          <tr>
+            <td colspan="2">
+              <span *ngIf="guardian.hp >= 150 && guardian.hp < 300">Strong </span>
+              <span *ngIf="guardian.hp >= 300 && guardian.hp < 500">Celestial </span>
+              <span *ngIf="guardian.hp >= 500 && guardian.hp < 800">Legendary </span>
+              <span *ngIf="guardian.hp >= 800">Demigod </span>
+              {{guardian.name}}
+            </td>
+          </tr>
           <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}}/{{guardianMaxHp}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{guardian.str | number:'1.0-2'}}</td></tr>
           <tr><td>🛡️ DEF:</td><td>{{guardian.def | number:'1.0-2'}}</td></tr>

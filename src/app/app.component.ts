@@ -204,6 +204,7 @@ enemyEmojis: { [key: string]: string } = {
   messages: string[] = [];
   assignRandomGuardian() {
     this.playclick()
+    this.playselected()
     if (!this.bgMusic) {
     this.playBackgroundMusic();
   }
@@ -246,6 +247,7 @@ spendSkillPoint(stat: "str" | "def" | "spd") {
   guardianSlain() {
     if (this.guardianRegenInterval) clearInterval(this.guardianRegenInterval);
     this.showGuardianSlainPopup = true;
+    this.playgameover()
   }
 startGuardianRegen() {
   if (!this.guardian || this.guardian.hp >= this.guardianMaxHp) return;
@@ -345,7 +347,7 @@ stopGuardianRegen() {
 playBackgroundMusic() {
   this.bgMusic = new Audio('assets/sounds/bg-music.mp3');
   this.bgMusic.loop = true;       // 🔁 infinite loop
-  // this.bgMusic.volume = 0.5;      // 🎵 set to 50% volume
+  // this.bgMusic.volume = 0.1;      // 🎵 set to 50% volume
   this.bgMusic.play().catch(err => {
     console.warn("Autoplay blocked by browser, will play on first interaction", err);
   });
@@ -387,6 +389,14 @@ playRandomAttackSound() {
 }
 playclick(){
   const audio = new Audio("assets/sounds/btn.mp3");
+  audio.play();
+}
+playgameover(){
+  const audio = new Audio("assets/sounds/gameover.mp3");
+  audio.play();
+}
+playselected(){
+  const audio = new Audio("assets/sounds/selected.mp3");
   audio.play();
 }
 playwalk(){
@@ -480,6 +490,7 @@ this.playRandomAttackSound();
     this.guardian.hp = 0;
     this.addMessage(`💀 Your Guardian was defeated by ${this.currentEnemy?.name || 'the enemy'}!`);
     this.showGuardianSlainPopup = true;
+    this.playgameover()
     this.currentEnemy = null;
     this.playerGuardianAssigned = false;
 
@@ -549,6 +560,7 @@ escape() {
     if (this.guardian.hp <= 0) {
       this.guardian.hp = 0;
       this.addMessage(`💀 Your Guardian has been defeated by ${this.currentEnemy.name}!`);
+      this.playgameover()
       this.showGuardianSlainPopup = true;
       this.currentEnemy = null;
       this.playerGuardianAssigned = false;

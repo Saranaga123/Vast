@@ -377,29 +377,47 @@ button:active {
 }
 /* Base Guardian image */
 .guardian-gif {
-  transition: filter 0.3s ease-in-out;
+  transition: filter 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-/* Celestial glow (blueish/white) */
-.celestial-glow {
-  filter: drop-shadow(0 0 10px #4fc3f7) drop-shadow(0 0 20px #81d4fa);
+/* Level 2 - Strong (green glow) */
+.glow-strong {
+  filter: drop-shadow(0 0 8px #66bb6a);
+  animation: strongPulse 2.5s infinite alternate;
+}
+@keyframes strongPulse {
+  from { filter: drop-shadow(0 0 6px #43a047); }
+  to   { filter: drop-shadow(0 0 15px #81c784); }
+}
+
+/* Level 3 - Celestial (blue glow) */
+.glow-celestial {
+  filter: drop-shadow(0 0 10px #42a5f5);
   animation: celestialPulse 2s infinite alternate;
 }
-
-/* Demigod glow (golden/fire) */
-.demigod-glow {
-  filter: drop-shadow(0 0 12px #ffca28) drop-shadow(0 0 25px #ffb300) drop-shadow(0 0 40px #ff6f00);
-  animation: demigodPulse 1.5s infinite alternate;
-}
-
-/* Celestial animation */
 @keyframes celestialPulse {
-  from { filter: drop-shadow(0 0 8px #4fc3f7) drop-shadow(0 0 15px #81d4fa); }
-  to   { filter: drop-shadow(0 0 20px #80deea) drop-shadow(0 0 40px #b3e5fc); }
+  from { filter: drop-shadow(0 0 8px #1e88e5); }
+  to   { filter: drop-shadow(0 0 20px #90caf9); }
 }
 
-/* Demigod animation */
+/* Level 4 - Legendary (purple glow) */
+.glow-legendary {
+  filter: drop-shadow(0 0 12px #ab47bc);
+  animation: legendaryPulse 1.8s infinite alternate;
+  transform: scale(1.05);
+}
+@keyframes legendaryPulse {
+  from { filter: drop-shadow(0 0 10px #8e24aa); }
+  to   { filter: drop-shadow(0 0 25px #ba68c8); }
+}
+
+/* Level 5 - Demigod (golden fiery glow) */
+.glow-demigod {
+  filter: drop-shadow(0 0 15px #ffca28) drop-shadow(0 0 25px #ff9100);
+  animation: demigodPulse 1.5s infinite alternate;
+  transform: scale(1.1);
+}
 @keyframes demigodPulse {
-  from { filter: drop-shadow(0 0 12px #ffca28) drop-shadow(0 0 20px #ffb300) drop-shadow(0 0 30px #ff6f00); }
-  to   { filter: drop-shadow(0 0 20px #fff176) drop-shadow(0 0 35px #ffd54f) drop-shadow(0 0 50px #ff9100); }
+  from { filter: drop-shadow(0 0 15px #ffca28) drop-shadow(0 0 25px #ff6f00); }
+  to   { filter: drop-shadow(0 0 30px #fff176) drop-shadow(0 0 50px #ffb300); }
 }
