@@ -147,21 +147,21 @@
         <table class="side-table">
           <caption>🛡️ Your Guardian</caption>
           <tr>
-            <td colspan="2" class="entity-img" style="text-align: center;">
-              <img 
-                [src]="guardian.imageUrl" 
-                [alt]="guardian.name" 
-                class="guardian-gif"
-                [ngClass]="{
-                  'glow-strong': guardian.hp >= 150 && guardian.hp < 300,
-                  'glow-celestial': guardian.hp >= 300 && guardian.hp < 500,
-                  'glow-legendary': guardian.hp >= 500 && guardian.hp < 800,
-                  'glow-demigod': guardian.hp >= 800
-                }"
-                style="height:68px"
-              >
-            </td>
-          </tr>
+  <td colspan="2" class="entity-img" style="text-align: center;">
+    <img 
+      [src]="guardian.imageUrl" 
+      [alt]="guardian.name" 
+      class="guardian-gif"
+      [ngClass]="{
+        'glow-strong': guardian.evolutionLevel === 1,
+        'glow-celestial': guardian.evolutionLevel === 2,
+        'glow-legendary': guardian.evolutionLevel === 3,
+        'glow-demigod': guardian.evolutionLevel === 4
+      }"
+      style="height:70px"
+    >
+  </td>
+</tr>
 
           <tr>
             <td colspan="2">
@@ -202,21 +202,22 @@
                 [alt]="guardian.name" 
                 class="guardian-gif"
                 [ngClass]="{
-                  'glow-strong': guardian.hp >= 150 && guardian.hp < 300,
-                  'glow-celestial': guardian.hp >= 300 && guardian.hp < 500,
-                  'glow-legendary': guardian.hp >= 500 && guardian.hp < 800,
-                  'glow-demigod': guardian.hp >= 800
+                  'glow-strong': guardian.evolutionLevel === 1,
+                  'glow-celestial': guardian.evolutionLevel === 2,
+                  'glow-legendary': guardian.evolutionLevel === 3,
+                  'glow-demigod': guardian.evolutionLevel === 4
                 }"
                 style="height:70px"
               >
             </td>
           </tr>
 
-          <tr>
-            <td colspan="2">
-              {{ getGuardianTitle() }} {{ guardian.name }}
-            </td>
-          </tr>
+          <tr *ngIf="guardian">
+  <td colspan="2">
+    {{ getGuardianTitle() }} {{ guardian.name }}
+  </td>
+</tr>
+
           <tr><td>❤️ HP:</td><td>{{guardian.hp | number:'1.0-2'}}/{{guardianMaxHp}}</td></tr>
           <tr><td>⚔️ STR:</td><td>{{guardian.str | number:'1.0-2'}}</td></tr>
           <tr><td>🛡️ DEF:</td><td>{{guardian.def | number:'1.0-2'}}</td></tr>

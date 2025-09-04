@@ -199,41 +199,40 @@ enemyEmojis: { [key: string]: string } = {
 
   // Guardian stats
 
- 
 
   // Current enemy
   currentEnemy: Entity | null = null;
   evolutionStages = [
     { title: "Normal", hp: 0, bonus: {} },
-    { title: "Strong", hp: 150, bonus: { str: 4 } },
-    { title: "Celestial", hp: 300, bonus: { str: 2,def: 2, spd: 5 } },
-    { title: "Legendary", hp: 500, bonus: { str: 5, def: 5 } },
-    { title: "Demigod", hp: 800, bonus: { str: 5, def: 5, spd: 5 } }
+    { title: "Strong", hp: 150, bonus: { str: 2 } },
+    { title: "Celestial", hp: 300, bonus: { def: 2, spd: 2 } },
+    { title: "Legendary", hp: 500, bonus: { str: 3, def: 2 } },
+    { title: "Demigod", hp: 800, bonus: { str: 5, def: 3, spd: 3 } }
   ];
+  
   checkEvolution() {
-  if (!this.guardian) return; // ✅ null guard
+    if (!this.guardian) return; // ✅ null guard
 
-  for (let i = this.evolutionStages.length - 1; i >= 0; i--) {
-    const stage = this.evolutionStages[i];
-    if (this.guardian.hp >= stage.hp && (this.guardian.evolutionLevel ?? 0) < i) {
-      this.guardian.evolutionLevel = i;
-      this.applyEvolutionBonus(stage.bonus);
-      this.addMessage(`✨ Your Guardian evolved into <strong>${stage.title}</strong>!`);
-      break;
+    for (let i = this.evolutionStages.length - 1; i >= 0; i--) {
+      const stage = this.evolutionStages[i];
+      if (this.guardian.hp >= stage.hp && (this.guardian.evolutionLevel ?? 0) < i) {
+        this.guardian.evolutionLevel = i;
+        this.applyEvolutionBonus(stage.bonus);
+        this.addMessage(`✨ Your Guardian evolved into <strong>${stage.title}</strong>!`);
+        break;
+      }
     }
   }
-}
-
+ 
 applyEvolutionBonus(bonus: any) {
   if (!this.guardian) return; // ✅ null guard
   if (bonus.str) this.guardian.str += bonus.str;
   if (bonus.def) this.guardian.def += bonus.def;
   if (bonus.spd) this.guardian.spd += bonus.spd;
 }
-
-// Messages
-messages: string[] = [];
-
+  // Messages
+  messages: string[] = [];
+  
 assignRandomGuardian() {
   this.playclick();
   this.playselected();
@@ -252,6 +251,7 @@ assignRandomGuardian() {
   this.addMessage(`You have been assigned the guardian: ${this.guardian.name}!`);
   this.startGuardianRegen();
   this.updateGuardianEmoji();
+  this.checkEvolution();
   this.saveGame();
 }
 
@@ -261,12 +261,11 @@ getGuardianTitle(): string {
 }
 
  
-getNextEvolution(): { title: string, hp: number, bonus: any } | null {
+ getNextEvolution(): { title: string, hp: number, bonus: any } | null {
   if (!this.guardian) return null;
   const nextLevel = (this.guardian.evolutionLevel ?? 0) + 1;
   return this.evolutionStages[nextLevel] || null;
 }
-
 
 skillPoints: number = 0;
 spendSkillPoint(stat: "str" | "def" | "spd") {
@@ -576,7 +575,7 @@ this.playRandomAttackSound();
   this.addMessage(`✨ You absorbed ${enemy.name}!`);
   this.addMessage(`❤️ HP +${originalHp.toFixed(2)}`);
   this.addMessage(`⚡ You gained +1 Skill Point! (Total: ${this.skillPoints})`);
-
+  this.checkEvolution();
   this.saveGame(); // ✅ keep progress safe
 }
 
@@ -801,6 +800,7 @@ loadGame() {
         const gained = this.guardian.hp - before;
         if (gained > 0) {
           this.addMessage(`🌿 While you were away (${minutesAway} min), your Guardian recovered ${gained} HP!`);
+          this.checkEvolution();
         }
       }
     }
