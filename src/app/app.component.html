@@ -329,6 +329,7 @@
         <ng-container *ngIf="guardian">
           <div class="battle-actions">
             <button *ngIf="guardian && !currentEnemy && !finalBossAvailable" (click)="searchEnemy()">Search For Enemy</button>
+            <button *ngIf="currentEnemy" (click)="attackEnemy()">Attack</button>
             <button 
               *ngIf="guardian && !currentEnemy && !finalBossAvailable && bossesDefeated < totalBossesToWin && guardian.hp >= 300"
               (click)="searchBoss()"
@@ -336,7 +337,7 @@
               👹 Fight a Boss
             </button>
             <button *ngIf="guardian && !currentEnemy && finalBossAvailable" (click)="searchFinalBoss()">Face Final Boss!</button>
-            <button *ngIf="currentEnemy" (click)="attackEnemy()">Attack</button>
+            
             <button *ngIf="currentEnemy" (click)="escape()">Escape</button>
             <button *ngIf="currentEnemy" (click)="autoAttackEnemy()" [disabled]="!currentEnemy">⚔️ Auto ⚔️</button> 
           </div>
