@@ -284,7 +284,7 @@ animals: AnimalPopulation[] = [
   finalBossAvailable = false;
   finalBoss: Entity = {
     name: 'World Devourer',
-    hp: 1000,
+    hp: 100000,
     str: 100,
     def: 100,
     spd: 100,
@@ -310,7 +310,30 @@ animals: AnimalPopulation[] = [
   return guardian.titles[level]?.title || guardian.name;
 }
 
- 
+scaleEnemiesWithPlayer(playerHp: number) {
+  if (playerHp <= 500) return;
+
+  // Scale regular enemies
+  this.enemies.forEach(enemy => {
+    const animal = this.animals.find(a => a.name === enemy.name);
+    if (animal && animal.count > 0) {
+      const randomBonus = Math.floor(Math.random() * 100) + 1; // 1-100
+      const randomBonus2 = Math.floor(Math.random() * 50) + 1; // 1-100
+      const randomBonus3 = Math.floor(Math.random() * 20) + 1; // 1-100
+
+      enemy.hp = playerHp + randomBonus;
+      enemy.def = 70 + randomBonus2 ;
+      enemy.spd = 40 + randomBonus3
+      enemy.str = enemy.str + randomBonus
+    }
+  });
+
+  // Scale bosses dynamically too
+  this.bosses.forEach(boss => {
+    const randomBonus = Math.floor(Math.random() * 500) + 200; // 1-100
+    boss.hp = playerHp + randomBonus;
+  });
+}
 popupEvolutionLevel?: number; 
  // Returns the guardian's permanent evolution level
 getEvolutionLevel(guardian: Entity): number {
@@ -330,7 +353,7 @@ checkEvolution() {
 
   const titles = this.guardian.titles;
   let currentLevel = this.guardian.evolutionLevel ?? 0;
-
+  this.scaleEnemiesWithPlayer(this.guardian.hp);
   // Find the highest stage that qualifies
   for (let i = titles.length - 1; i >= 0; i--) {
     if (this.guardian.hp >= titles[i].hp) {
@@ -702,7 +725,7 @@ regenProgress: number = 0;
       this.currentEnemy = null;
       return;
     }
-
+    
     const randomIndex = Math.floor(Math.random() * enemiesInBiome.length);
     const enemy: Entity = { ...enemiesInBiome[randomIndex] };
     (enemy as any).hpBeforeFight = enemy.hp;
@@ -715,9 +738,10 @@ regenProgress: number = 0;
   this.playclick();
   this.stopGuardianRegen();
   const bossTemplate = this.bosses[Math.floor(Math.random() * this.bosses.length)];
+  const randomHP = Math.floor(Math.random() * 1000) + 500;  
   const boss: Entity = {
     name: bossTemplate.name,
-    hp: Math.floor(300 + Math.random() * 200),
+    hp: randomHP,
     str: Math.floor(25 + Math.random() * 90),
     def: Math.floor(15 + Math.random() * 80),
     spd: Math.floor(15 + Math.random() * 75),

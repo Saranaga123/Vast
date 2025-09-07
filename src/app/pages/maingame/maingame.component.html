@@ -199,12 +199,18 @@
 
             <table class="side-table">
               <caption>👹 Enemy</caption>
-              <tr><td colspan="2" class="entity-img" style="text-align: center !important;"><img [src]="currentEnemy.imageUrl"   class="enemy-gif" style="height:68px"/></td></tr>
-              <tr> <td colspan="2">{{currentEnemy.name}}</td></tr>
-              <tr><td>❤️ HP:</td><td>{{currentEnemy.hp}}</td></tr>
-              <tr><td>⚔️ STR:</td><td>{{currentEnemy.str}}</td></tr>
-              <tr><td>🛡️ DEF:</td><td>{{currentEnemy.def}}</td></tr>
-              <tr><td>💨 SPD:</td><td>{{currentEnemy.spd}}</td></tr>
+              <tr><td colspan="2" class="entity-img" style="text-align: center !important;"><img [src]="currentEnemy.imageUrl"  [ngClass]="{
+                      'glow-strong2': getEvolutionLevel(guardian) === 2,
+                      'glow-celestial2': getEvolutionLevel(guardian) === 3, 
+                      'glow-demigod2': getEvolutionLevel(guardian) === 4
+                    }" class="enemy-gif" style="height:68px"/></td></tr>
+              <tr> <td colspan="2"><span *ngIf="getEvolutionLevel(guardian) === 2">Currupted </span>
+                                    <span *ngIf="getEvolutionLevel(guardian) === 3">Dark </span>
+                                    <span *ngIf="getEvolutionLevel(guardian) === 4">Demon </span>  {{currentEnemy.name}}</td></tr>
+              <tr><td>❤️ HP:</td><td>{{currentEnemy.hp| number:'1.0-2'}}</td></tr>
+              <tr><td>⚔️ STR:</td><td>{{currentEnemy.str| number:'1.0-2'}}</td></tr>
+              <tr><td>🛡️ DEF:</td><td>{{currentEnemy.def| number:'1.0-2'}}</td></tr>
+              <tr><td>💨 SPD:</td><td>{{currentEnemy.spd| number:'1.0-2'}}</td></tr>
               <tr><td>🔥 Attack</td><td>{{calculateDamage(currentEnemy, guardian)}}</td></tr>
               <tr><td>💨 Dodge</td><td>{{calculateDodgeChance(guardian, currentEnemy)}}%</td></tr>
             </table>
@@ -262,11 +268,12 @@
                         class="guardian-gif"
                         style="width: 150px; height: 150px; margin: 20px 0;"
                         [ngClass]="
-                          getEvolutionLevel(guardian) === 2 ? 'glow-strong' :
-                          getEvolutionLevel(guardian) === 3 ? 'glow-celestial' :
-                          getEvolutionLevel(guardian) === 4 ? 'glow-legendary' :
-                          getEvolutionLevel(guardian) === 5 ? 'glow-demigod' : ''">
+                          getEvolutionLevel(guardian) === 1 ? 'glow-strong' :
+                          getEvolutionLevel(guardian) === 2 ? 'glow-celestial' :
+                          getEvolutionLevel(guardian) === 3 ? 'glow-legendary' :
+                          getEvolutionLevel(guardian) === 4 ? 'glow-demigod' : ''">
                     <br>
+                    <p *ngIf="getEvolutionLevel(guardian) === 3 " style="color:red" class="glow-heal">ALL ANIMALS ARE EFFECTED <br> BY DARK FORCE ! </p>
                     <button (click)="closeEvolutionPopup()">OK</button>
                   </div>
                 </div>

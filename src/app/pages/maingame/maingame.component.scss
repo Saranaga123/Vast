@@ -349,6 +349,15 @@ button:active {
   from { filter: drop-shadow(0 0 6px #43a047); }
   to   { filter: drop-shadow(0 0 15px #81c784); }
 }
+.glow-strong2 {
+  filter: drop-shadow(0 0 8px #6699bb);
+  animation: strongPulse2 2.5s infinite alternate;
+}
+
+@keyframes strongPulse2 {
+  from { filter: drop-shadow(0 0 6px #437ea0); }
+  to   { filter: drop-shadow(0 0 15px #8191c7); }
+}
 .glow-heal {
   filter: drop-shadow(0 0 8px #b12c2c);
   animation: healing 0.5s infinite alternate;
@@ -375,6 +384,16 @@ button:active {
   to   { filter: drop-shadow(0 0 20px #90caf9); }
 }
 
+.glow-celestial2 {
+  filter: drop-shadow(0 0 10px #f54278);
+  animation: celestialPulse2 2s infinite alternate;
+}
+
+@keyframes celestialPulse2 {
+  from { filter: drop-shadow(0 0 8px #e51e49); }
+  to   { filter: drop-shadow(0 0 20px #f99090); }
+}
+
 /* Level 4 - Legendary (purple glow) */
 .glow-legendary {
   filter: drop-shadow(0 0 12px #ab47bc);
@@ -397,6 +416,17 @@ button:active {
 @keyframes demigodPulse {
   from { filter: drop-shadow(0 0 15px #ffca28) drop-shadow(0 0 25px #ff6f00); }
   to   { filter: drop-shadow(0 0 30px #fff176) drop-shadow(0 0 50px #ffb300); }
+}
+
+.glow-demigod2 {
+  filter: drop-shadow(0 0 15px #3c6e32) drop-shadow(0 0 25px #3b6b39);
+  animation: demigodPulse2 1.5s infinite alternate;
+  transform: scale(1.1);
+}
+
+@keyframes demigodPulse2 {
+  from { filter: drop-shadow(0 0 15px #e682ff) drop-shadow(0 0 25px #c633d3); }
+  to   { filter: drop-shadow(0 0 30px #972eb1) drop-shadow(0 0 50px #701d77); }
 }
 
 .evolution-info {
