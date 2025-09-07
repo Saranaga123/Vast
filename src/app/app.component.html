@@ -260,10 +260,10 @@
                         class="guardian-gif"
                         style="width: 150px; height: 150px; margin: 20px 0;"
                         [ngClass]="
-                          getEvolutionLevel(guardian) === 1 ? 'glow-strong' :
-                          getEvolutionLevel(guardian) === 2 ? 'glow-celestial' :
-                          getEvolutionLevel(guardian) === 3 ? 'glow-legendary' :
-                          getEvolutionLevel(guardian) === 4 ? 'glow-demigod' : ''">
+                          getEvolutionLevel(guardian) === 2 ? 'glow-strong' :
+                          getEvolutionLevel(guardian) === 3 ? 'glow-celestial' :
+                          getEvolutionLevel(guardian) === 4 ? 'glow-legendary' :
+                          getEvolutionLevel(guardian) === 5 ? 'glow-demigod' : ''">
                     <br>
                     <button (click)="closeEvolutionPopup()">OK</button>
                   </div>
@@ -327,19 +327,21 @@
 
       <div class="action-panel" *ngIf="playerGuardianAssigned && !finalBossDefeated && !isPreBossFightScreen">
         <ng-container *ngIf="guardian">
-          <div class="battle-actions">
-            <button *ngIf="guardian && !currentEnemy && !finalBossAvailable" (click)="searchEnemy()">Search For Enemy</button>
-            <button *ngIf="currentEnemy" (click)="attackEnemy()">Attack</button>
+          <div class="battle-actions" style="margin-bottom: 10px;">
             <button 
               *ngIf="guardian && !currentEnemy && !finalBossAvailable && bossesDefeated < totalBossesToWin && guardian.hp >= 300"
               (click)="searchBoss()"
             >
               👹 Fight a Boss
             </button>
+            <button *ngIf="guardian && !currentEnemy && !finalBossAvailable" (click)="searchEnemy()">Search For Enemy</button>
+            <button *ngIf="currentEnemy" (click)="attackEnemy()">Attack</button>
+            
             <button *ngIf="guardian && !currentEnemy && finalBossAvailable" (click)="searchFinalBoss()">Face Final Boss!</button>
             
             <button *ngIf="currentEnemy" (click)="escape()">Escape</button>
             <button *ngIf="currentEnemy" (click)="autoAttackEnemy()" [disabled]="!currentEnemy">⚔️ Auto ⚔️</button> 
+            
           </div>
         </ng-container>
       </div> 

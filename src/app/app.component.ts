@@ -42,41 +42,42 @@ export class AppComponent {
   bossesDefeated = 0;
   totalBossesToWin: number = 10;
   bossAvailable: boolean = false;
-  enemies = [
-    { name: 'Caterpillar', hp: 20, str: 5, def: 5, spd: 15, imageUrl: 'assets/Caterpillar.gif' },
-    { name: 'Mouse', hp: 15, str: 5, def: 3, spd: 50, imageUrl: 'assets/Mouse.gif' },
-    { name: 'Bunny', hp: 25, str: 7, def: 5, spd: 30, imageUrl: 'assets/Bunny.gif' },
-    { name: 'Deer', hp: 30, str: 10, def: 7, spd: 25, imageUrl: 'assets/Deer.webp' },
-    { name: 'Sloth', hp: 20, str: 8, def: 12, spd: 10, imageUrl: 'assets/Sloth.gif' },
-    { name: 'Goat', hp: 25, str: 8, def: 8, spd: 20, imageUrl: 'assets/Goat.gif' },
-    { name: 'Panda', hp: 25, str: 10, def: 10, spd: 15, imageUrl: 'assets/Panda.gif' },
-    { name: 'Bison', hp: 30, str: 12, def: 10, spd: 15, imageUrl: 'assets/Bison.gif' },
-    { name: 'Gorilla', hp: 30, str: 12, def: 10, spd: 20, imageUrl: 'assets/Gorilla.gif' },
-    { name: 'Beetle', hp: 15, str: 4, def: 5, spd: 20, imageUrl: 'assets/Beetle.gif' },
-    { name: 'Fox', hp: 25, str: 10, def: 6, spd: 35, imageUrl: 'assets/Fox.gif' },
-    { name: 'Wolf', hp: 35, str: 15, def: 10, spd: 30, imageUrl: 'assets/Wolf.gif' },
-    { name: 'Bear', hp: 50, str: 20, def: 15, spd: 20, imageUrl: 'assets/Bear.gif' },
-    { name: 'Tiger', hp: 45, str: 20, def: 12, spd: 35, imageUrl: 'assets/Tiger.gif' },
-    { name: 'Lion', hp: 45, str: 22, def: 15, spd: 30, imageUrl: 'assets/Lion.gif' },
-    { name: 'Elephant', hp: 60, str: 25, def: 20, spd: 10, imageUrl: 'assets/Elephant.gif' },
-    { name: 'Hawk', hp: 20, str: 10, def: 5, spd: 50, imageUrl: 'assets/Hawk.gif' },
-    { name: 'Snake', hp: 25, str: 12, def: 5, spd: 40, imageUrl: 'assets/Snake.gif' },
-    { name: 'Crocodile', hp: 45, str: 18, def: 15, spd: 15, imageUrl: 'assets/Crocodile.gif' },
-    { name: 'Boar', hp: 35, str: 15, def: 10, spd: 20, imageUrl: 'assets/Boar.gif' },
-    { name: 'Owl', hp: 20, str: 8, def: 5, spd: 35, imageUrl: 'assets/Owl.gif' },
-    { name: 'Frog', hp: 15, str: 5, def: 3, spd: 25, imageUrl: 'assets/Frog.gif' },
-    { name: 'Lizard', hp: 20, str: 6, def: 4, spd: 30, imageUrl: 'assets/Lizard.gif' },
-    { name: 'Goblin Farmer', hp: 40, str: 15, def: 10, spd: 25, imageUrl: 'assets/Goblin Farmer.gif' },
-    { name: 'Goblin Mage', hp: 30, str: 20, def: 8, spd: 30, imageUrl: 'assets/Goblin Mage.gif' },
-    { name: 'Human Warrior', hp: 50, str: 20, def: 15, spd: 20, imageUrl: 'assets/Human Warrior.gif' },
-    { name: 'Human Knight', hp: 55, str: 25, def: 20, spd: 15, imageUrl: 'assets/Human Knight.gif' },
-    { name: 'Elf Archer', hp: 35, str: 15, def: 10, spd: 40, imageUrl: 'assets/Elf Archer.gif' },
-    { name: 'Elf Mage', hp: 30, str: 18, def: 8, spd: 35, imageUrl: 'assets/Elf Mage.webp' },
-    { name: 'Orc Fighter', hp: 60, str: 25, def: 20, spd: 15, imageUrl: 'assets/Orc Fighter.gif' },
-    { name: 'Orc Shaman', hp: 50, str: 20, def: 15, spd: 20, imageUrl: 'assets/Orc Shaman.gif' },
-    { name: 'Beast People Hunter', hp: 45, str: 18, def: 15, spd: 25, imageUrl: 'assets/Beast People Hunter.gif' },
-    { name: 'Beast People Warrior', hp: 50, str: 20, def: 18, spd: 20, imageUrl: 'assets/Beast People Warrior.gif' }
-  ];  
+   enemies = [
+  { name: 'Caterpillar', hp: 15, str: 3, def: 4, spd: 10, imageUrl: 'assets/Caterpillar.gif' },
+  { name: 'Mouse', hp: 18, str: 4, def: 3, spd: 55, imageUrl: 'assets/Mouse.gif' },
+  { name: 'Bunny', hp: 22, str: 6, def: 5, spd: 35, imageUrl: 'assets/Bunny.gif' },
+  { name: 'Deer', hp: 35, str: 9, def: 6, spd: 30, imageUrl: 'assets/Deer.webp' },
+  { name: 'Sloth', hp: 28, str: 7, def: 10, spd: 8, imageUrl: 'assets/Sloth.gif' },
+  { name: 'Goat', hp: 30, str: 10, def: 8, spd: 20, imageUrl: 'assets/Goat.gif' },
+  { name: 'Panda', hp: 40, str: 12, def: 12, spd: 12, imageUrl: 'assets/Panda.gif' },
+  { name: 'Bison', hp: 45, str: 14, def: 12, spd: 15, imageUrl: 'assets/Bison.gif' },
+  { name: 'Gorilla', hp: 50, str: 20, def: 12, spd: 18, imageUrl: 'assets/Gorilla.gif' },
+  { name: 'Beetle', hp: 18, str: 5, def: 12, spd: 12, imageUrl: 'assets/Beetle.gif' },
+  { name: 'Fox', hp: 25, str: 9, def: 5, spd: 40, imageUrl: 'assets/Fox.gif' },
+  { name: 'Wolf', hp: 35, str: 14, def: 9, spd: 32, imageUrl: 'assets/Wolf.gif' },
+  { name: 'Bear', hp: 55, str: 20, def: 15, spd: 15, imageUrl: 'assets/Bear.gif' },
+  { name: 'Tiger', hp: 45, str: 18, def: 12, spd: 38, imageUrl: 'assets/Tiger.gif' },
+  { name: 'Lion', hp: 50, str: 20, def: 14, spd: 34, imageUrl: 'assets/Lion.gif' },
+  { name: 'Elephant', hp: 80, str: 25, def: 22, spd: 8, imageUrl: 'assets/Elephant.gif' },
+  { name: 'Hawk', hp: 18, str: 8, def: 4, spd: 60, imageUrl: 'assets/Hawk.gif' },
+  { name: 'Snake', hp: 20, str: 12, def: 5, spd: 45, imageUrl: 'assets/Snake.gif' },
+  { name: 'Crocodile', hp: 55, str: 18, def: 18, spd: 12, imageUrl: 'assets/Crocodile.gif' },
+  { name: 'Boar', hp: 35, str: 13, def: 10, spd: 22, imageUrl: 'assets/Boar.gif' },
+  { name: 'Owl', hp: 20, str: 7, def: 4, spd: 40, imageUrl: 'assets/Owl.gif' },
+  { name: 'Frog', hp: 20, str: 6, def: 4, spd: 30, imageUrl: 'assets/Frog.gif' },
+  { name: 'Lizard', hp: 22, str: 7, def: 5, spd: 28, imageUrl: 'assets/Lizard.gif' },
+  { name: 'Goblin Farmer', hp: 35, str: 12, def: 9, spd: 22, imageUrl: 'assets/Goblin Farmer.gif' },
+  { name: 'Goblin Mage', hp: 28, str: 18, def: 7, spd: 28, imageUrl: 'assets/Goblin Mage.gif' },
+  { name: 'Human Warrior', hp: 45, str: 18, def: 14, spd: 22, imageUrl: 'assets/Human Warrior.gif' },
+  { name: 'Human Knight', hp: 55, str: 22, def: 20, spd: 16, imageUrl: 'assets/Human Knight.gif' },
+  { name: 'Elf Archer', hp: 30, str: 14, def: 8, spd: 42, imageUrl: 'assets/Elf Archer.gif' },
+  { name: 'Elf Mage', hp: 28, str: 20, def: 7, spd: 35, imageUrl: 'assets/Elf Mage.webp' },
+  { name: 'Orc Fighter', hp: 65, str: 25, def: 20, spd: 14, imageUrl: 'assets/Orc Fighter.gif' },
+  { name: 'Orc Shaman', hp: 55, str: 22, def: 15, spd: 18, imageUrl: 'assets/Orc Shaman.gif' },
+  { name: 'Beast People Hunter', hp: 45, str: 16, def: 12, spd: 30, imageUrl: 'assets/Beast People Hunter.gif' },
+  { name: 'Beast People Warrior', hp: 55, str: 20, def: 18, spd: 20, imageUrl: 'assets/Beast People Warrior.gif' }
+];
+   
   biomeEnemies: any = {
     forest: ['Caterpillar', 'Bunny', 'Deer', 'Sloth', 'Goblin Farmer', 'Fox', 'Wolf'],
     plains: ['Mouse', 'Goat', 'Bison', 'Human Warrior', 'Human Knight', 'Bear', 'Tiger', 'Lion'],
@@ -324,7 +325,7 @@ checkEvolution() {
 
         // Set popup
         this.evolutionTitle = stage.title;
-        this.evolutionImageSrc = `assets/Gimages/${this.guardian.name}/${i}.png`;
+        this.evolutionImageSrc = `assets/Gimages/${this.guardian.name}/${i+1}.png`;
         this.showEvolutionPopup = true;
 
         this.addMessage(`${this.guardian.name} evolved into ${stage.title}!`);
