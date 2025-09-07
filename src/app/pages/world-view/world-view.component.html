@@ -1,0 +1,29 @@
+<div class="biome-selector">
+  <label for="biome">Select Biome:</label>
+  <select id="biome" [(ngModel)]="selectedBiome">
+    <option *ngFor="let biome of getBiomes()" [value]="biome">{{ biome | titlecase }}</option>
+  </select>
+</div>
+
+<h3>Enemies in {{ selectedBiome | titlecase }}</h3>
+
+<table class="enemy-table">
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Enemy</th>
+      <th>Original Count</th>
+      <th>Current Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let e of getEnemiesForBiome(selectedBiome)">
+      <td>
+        <img [src]="e.entity.imageUrl" alt="{{e.entity.name}}" class="enemy-img">
+      </td>
+      <td>{{ e.entity.name }}</td>
+      <td>{{ e.originalCount }}</td>
+      <td>{{ e.currentCount }}</td>
+    </tr>
+  </tbody>
+</table>

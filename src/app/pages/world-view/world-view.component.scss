@@ -1,0 +1,49 @@
+.biome-selector {
+  margin-bottom: 1rem;
+}
+
+.enemy-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.enemy-table th, .enemy-table td {
+  border: 1px solid #000000;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.enemy-table th {
+  background-color: #2e2e2e;
+}
+
+.enemy-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+#biome {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 2px solid #8b5cf6;
+  background-color: #1e1e2f;
+  color: #f0f0f0;
+  font-size: 1rem;
+  font-weight: bold;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none; /* Remove default arrow */
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+}
+#biome::after {
+  content: '▾'; /* Unicode downward triangle */
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #f0f0f0;
+  font-size: 0.9rem;
+}
