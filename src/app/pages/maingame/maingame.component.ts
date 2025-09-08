@@ -317,13 +317,13 @@ scaleEnemiesWithPlayer(playerHp: number) {
   this.enemies.forEach(enemy => {
     const animal = this.animals.find(a => a.name === enemy.name);
     if (animal && animal.count > 0) {
-      const randomBonus = Math.floor(Math.random() * 100) + 1; // 1-100
+      const randomBonus = Math.floor(Math.random() * 90) + 1; // 1-100
       const randomBonus2 = Math.floor(Math.random() * 50) + 1; // 1-100
       const randomBonus3 = Math.floor(Math.random() * 20) + 1; // 1-100
 
       enemy.hp = playerHp + randomBonus;
-      enemy.def = 70 + randomBonus2 ;
-      enemy.spd = 40 + randomBonus3
+      enemy.def = 30 + randomBonus2 ;
+      enemy.spd = 30 + randomBonus3
       enemy.str = enemy.str + randomBonus
     }
   });
