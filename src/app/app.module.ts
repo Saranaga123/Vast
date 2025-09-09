@@ -6,12 +6,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { EvolutionComponent } from './pages/evolution/evolution.component';
 import { MaingameComponent } from './pages/maingame/maingame.component';
 import { WorldViewComponent } from './pages/world-view/world-view.component';
+import { MapComponent } from './pages/map/map.component';
 @NgModule({
   declarations: [
     AppComponent,
     EvolutionComponent,
     MaingameComponent,
-    WorldViewComponent
+    WorldViewComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,

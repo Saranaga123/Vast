@@ -1,5 +1,7 @@
 
-<div class="app-container">
+<div class="app-container" style="position: fixed;
+    top: 0;
+    left: 0;">
   <div *ngIf="selectedBiome=='plains'" style="
       position: fixed;
       top: 0;
@@ -157,11 +159,15 @@
         </button>
 
         <main>
-          <div class="biome-selection">
+          <!-- <div class="biome-selection">
             <label for="biome">🌿 Select Biome: </label>
             <select id="biome" [(ngModel)]="selectedBiome">
               <option *ngFor="let biome of biomes" [value]="biome">{{ biome | titlecase }}</option>
             </select>
+          </div> -->
+          <div class="biome-selection" style="text-align:center ;">
+            <button (click)="openMap()" *ngIf="!currentEnemy">🌿 To Map 🐾</button><br>
+            <span *ngIf="selectedBiome"> Biome: {{ selectedBiome | titlecase }}</span>
           </div>
 
           <div class="battle-tables" *ngIf="currentEnemy && guardian">
@@ -232,8 +238,14 @@
                       'glow-demigod': getEvolutionLevel(guardian) === 4
                     }"
                     style="height:70px"
-                  >
+                  > 
                   <span class="glow-heal" style="color: rgb(255, 0, 0);font-weight: bold;" *ngIf="guardianRegenMessage">+</span>
+                  <div *ngIf="guardianRegenMessage" class="regen-container">
+                    <!-- <p>{{ guardianRegenMessage }}</p> -->
+                    <div class="progress-bar">
+                      <div class="progress-fill" [style.width.%]="regenProgress"></div>
+                    </div>
+                  </div>
                 </td>
               </tr>
               <tr *ngIf="guardian">
@@ -293,19 +305,14 @@
             </div>
           </div>
  
-            <div *ngIf="guardianRegenMessage" class="regen-container">
-              <p>{{ guardianRegenMessage }}</p>
-              <div class="progress-bar">
-                <div class="progress-fill" [style.width.%]="regenProgress"></div>
-              </div>
-            </div>
+            
           <div class="messages" #messagesContainer>
             <p *ngFor="let msg of messages">💬 {{msg}}</p>
           </div>
         </main>
 
         <div class="population-btn" style="text-align:center; margin:1vh 0;">
-          <button (click)="showPopulation = true">🌿Animal Watch🐾</button>
+          <button (click)="showPopulation = true">🔍🐾✨</button>
         </div>
         <div class="popup" *ngIf="showPopulation" style="z-index: 102;">
           <div class="popup-content">
@@ -327,16 +334,17 @@
       <div class="action-panel" *ngIf="playerGuardianAssigned && !finalBossDefeated && !isPreBossFightScreen&& !showPopulation">
         <ng-container *ngIf="guardian">
           <div class="battle-actions" style="margin-bottom: 10px;">
-            <button 
+            <!-- <button 
               *ngIf="guardian && !currentEnemy && !finalBossAvailable && bossesDefeated < totalBossesToWin && guardian.hp >= 300"
               (click)="searchBoss()"
             >
               👹 Fight a Boss
-            </button>
-            <button *ngIf="guardian && !currentEnemy && !finalBossAvailable" (click)="searchEnemy()">Search For Enemy</button>
+            </button> -->
+                    <button *ngIf="guardian && !currentEnemy && finalBossAvailable" (click)="searchFinalBoss()">Face Final Boss!</button>
+            <button *ngIf="guardian && !currentEnemy  " (click)="searchEnemy()">Search For Enemy</button>
             <button *ngIf="currentEnemy" (click)="attackEnemy()">Attack</button>
             
-            <button *ngIf="guardian && !currentEnemy && finalBossAvailable" (click)="searchFinalBoss()">Face Final Boss!</button>
+    
             
             <button *ngIf="currentEnemy" (click)="escape()">Escape</button>
             <button *ngIf="currentEnemy" (click)="autoAttackEnemy()" [disabled]="!currentEnemy">⚔️ Auto ⚔️</button> 

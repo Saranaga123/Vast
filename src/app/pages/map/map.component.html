@@ -1,0 +1,87 @@
+<div class="map">
+  <h3>  </h3>
+
+  <div class="map-container"  style="margin-top:19% ;">
+    <!-- Map background -->
+    <img src="assets/map/map.png" alt="Game Map" class="map-image" />
+
+    <!-- Biomes -->
+    <div *ngFor="let biome of biomePositions"
+         class="biome-marker"
+         [style.left.%]="biome.x"
+         [style.top.%]="biome.y"
+         (click)="onBiomeClick(biome.name)" style="font-size: 10px;">
+      🌿 {{ biome.name | titlecase }} 
+    </div>
+
+    <!-- Bosses -->
+   <div *ngFor="let boss of activeBosses"
+     class="boss-marker"
+     [style.left.%]="boss.x"
+     [style.top.%]="boss.y"
+     (click)="confirmBoss(boss.entity)"
+     style="font-size: 10px;">
+  👑 {{ boss.entity.name }}
+</div>
+
+  </div>
+</div>
+
+<!-- Biome Confirmation Overlay -->
+<div class="overlay" *ngIf="showConfirmOverlay">
+  <div class="overlay-content">
+    <h2>🌿 {{ pendingBiome | titlecase }}</h2>
+    <div *ngIf="!isLoading">
+     
+      <p>Are you sure you want to switch to this biome?</p>
+        <button class="yes" (click)="confirmBiomeChange()">✅ Yes</button>
+        <button class="no" (click)="cancelBiomeChange()">❌ Cancel</button>
+    </div>
+  
+    <div *ngIf="isLoading" class="loading">
+      <div class="spinner"></div>
+      <p>Traveling...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Boss Confirmation Overlay -->
+<div class="overlay" *ngIf="showOverlay">
+  <div class="overlay-content">
+    <h2>⚔️ {{ selectedBoss?.name }}</h2>
+    
+
+    <div *ngIf="!isLoading">
+      <img [src]="selectedBoss?.imageUrl" [alt]="selectedBoss?.name" class="boss-preview" />
+      <p>Are you sure you want to challenge this boss?</p>
+      <button class="yes" (click)="fightBoss()">✅ Yes</button>
+      <button class="no" (click)="cancelBoss()">❌ Cancel</button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">
+  <table class="vs-table">
+    <tr>
+      <!-- Boss (real portrait image) -->
+      <td>
+        <img [src]="selectedBoss?.image || selectedBoss?.imageUrl" 
+             [alt]="selectedBoss?.name">
+        <h3>{{ selectedBoss?.name }}</h3>
+      </td>
+
+      <!-- VS text -->
+      <td class="vs-text">VS</td>
+
+      <!-- Guardian (real image) -->
+      <td>
+        <img [src]="getGuardianRealImage()" 
+             [alt]="guardian?.name">
+        <h3>{{ guardian?.name || 'Guardian' }}</h3>
+      </td>
+    </tr>
+  </table>
+
+  <div class="spinner"></div>
+  <p>Preparing battle...</p>
+</div>
+  </div>
+</div>

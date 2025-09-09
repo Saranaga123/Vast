@@ -40,4 +40,11 @@ selectedBiome: string = 'forest'; // default biome
       return { entity: entity!, currentCount: a.count, originalCount: a.originalCount };
     });
   }
+  ngOnInit() {
+    // Load selected biome from localStorage if available
+    const savedBiome = localStorage.getItem('selectedBiome');
+    if (savedBiome) {
+      this.selectedBiome = savedBiome;
+    }
+  }
 }

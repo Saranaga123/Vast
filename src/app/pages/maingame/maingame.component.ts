@@ -1,4 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import { StatusBar } from '@capacitor/status-bar';
+import { Router } from '@angular/router';
+import { NavigationBar } from '@ethion/capacitor-navigation-bar';
 interface EvolutionTitle {
   hp: number;
   title: string;
@@ -30,65 +33,82 @@ interface AnimalPopulation {
   styleUrls: ['./maingame.component.scss']
 })
 export class MaingameComponent {
-showPopulation = false;
+  constructor(private router: Router) { }
+  showPopulation = false;
   playerGuardianAssigned = false;
   bosses: Entity[] = [
-    { name: 'Fire Dragon', hp: 500, str: 30, def: 20, spd: 15, imageUrl: 'assets/Fire Dragon.webp',image: 'assets/Bimages/dragon.png', },
-    { name: 'Ice Titan', hp: 400, str: 25, def: 25, spd: 10, imageUrl: 'assets/Ice Titan.webp' ,image: 'assets/Bimages/ice.png'},
-    { name: 'Shadow Behemoth', hp: 450, str: 28, def: 18, spd: 12, imageUrl: 'assets/Shadow Behemoth.webp' ,image: 'assets/Bimages/behomoth.png'},
-    { name: 'Thunder Golem', hp: 350, str: 20, def: 30, spd: 10, imageUrl: 'assets/Thunder Golem.gif' ,image: 'assets/Bimages/thunder.png'},
-    { name: 'Ancient Hydra', hp: 500, str: 35, def: 15, spd: 20, imageUrl: 'assets/Ancient Hydra.gif' ,image: 'assets/Bimages/hydra.png'},
-    { name: 'Earth Colossus', hp: 400, str: 22, def: 28, spd: 10, imageUrl: 'assets/Earth Colossus.gif' ,image: 'assets/Bimages/earth.png'},
-    { name: 'Demon Lord', hp: 500, str: 40, def: 25, spd: 20, imageUrl: 'assets/demon-lord.gif',image: 'assets/Bimages/demon.png' },
-    { name: 'Titanic Kraken', hp: 500, str: 35, def: 15, spd: 20, imageUrl: 'assets/Titanic Kraken.webp' ,image: 'assets/Bimages/craken.png'},
-    { name: 'Celestial Phoenix', hp: 400, str: 28, def: 18, spd: 30, imageUrl: 'assets/Celestial Phoenix.gif',image: 'assets/Bimages/phenix.png' }
+    { name: 'Fire Dragon', hp: 500, str: 30, def: 20, spd: 15, imageUrl: 'assets/Fire Dragon.webp', image: 'assets/Bimages/dragon.png', },
+    { name: 'Ice Titan', hp: 400, str: 25, def: 25, spd: 10, imageUrl: 'assets/Ice Titan.webp', image: 'assets/Bimages/ice.png' },
+    { name: 'Shadow Behemoth', hp: 450, str: 28, def: 18, spd: 12, imageUrl: 'assets/Shadow Behemoth.webp', image: 'assets/Bimages/behomoth.png' },
+    { name: 'Thunder Golem', hp: 350, str: 20, def: 30, spd: 10, imageUrl: 'assets/Thunder Golem.gif', image: 'assets/Bimages/thunder.png' },
+    { name: 'Ancient Hydra', hp: 500, str: 35, def: 15, spd: 20, imageUrl: 'assets/Ancient Hydra.gif', image: 'assets/Bimages/hydra.png' },
+    { name: 'Earth Colossus', hp: 400, str: 22, def: 28, spd: 10, imageUrl: 'assets/Earth Colossus.gif', image: 'assets/Bimages/earth.png' },
+    { name: 'Demon Lord', hp: 500, str: 40, def: 25, spd: 20, imageUrl: 'assets/demon-lord.gif', image: 'assets/Bimages/demon.png' },
+    { name: 'Titanic Kraken', hp: 500, str: 35, def: 15, spd: 20, imageUrl: 'assets/Titanic Kraken.webp', image: 'assets/Bimages/craken.png' },
+    { name: 'Celestial Phoenix', hp: 400, str: 28, def: 18, spd: 30, imageUrl: 'assets/Celestial Phoenix.gif', image: 'assets/Bimages/phenix.png' },
+    { name: 'Earth Colossus II', hp: 500, str: 22, def: 28, spd: 10, imageUrl: 'assets/Earth Colossus.gif', image: 'assets/Bimages/earth.png' },
   ];
   bossesDefeated = 0;
   totalBossesToWin: number = 10;
   bossAvailable: boolean = false;
-   enemies = [
-  { name: 'Caterpillar', hp: 15, str: 3, def: 4, spd: 10, imageUrl: 'assets/Caterpillar.gif' },
-  { name: 'Mouse', hp: 18, str: 4, def: 3, spd: 55, imageUrl: 'assets/Mouse.gif' },
-  { name: 'Bunny', hp: 22, str: 6, def: 5, spd: 35, imageUrl: 'assets/Bunny.gif' },
-  { name: 'Deer', hp: 35, str: 9, def: 6, spd: 30, imageUrl: 'assets/Deer.webp' },
-  { name: 'Sloth', hp: 28, str: 7, def: 10, spd: 8, imageUrl: 'assets/Sloth.gif' },
-  { name: 'Goat', hp: 30, str: 10, def: 8, spd: 20, imageUrl: 'assets/Goat.gif' },
-  { name: 'Panda', hp: 40, str: 12, def: 12, spd: 12, imageUrl: 'assets/Panda.gif' },
-  { name: 'Bison', hp: 45, str: 14, def: 12, spd: 15, imageUrl: 'assets/Bison.gif' },
-  { name: 'Gorilla', hp: 50, str: 20, def: 12, spd: 18, imageUrl: 'assets/Gorilla.gif' },
-  { name: 'Beetle', hp: 18, str: 5, def: 12, spd: 12, imageUrl: 'assets/Beetle.gif' },
-  { name: 'Fox', hp: 25, str: 9, def: 5, spd: 40, imageUrl: 'assets/Fox.gif' },
-  { name: 'Wolf', hp: 35, str: 14, def: 9, spd: 32, imageUrl: 'assets/Wolf.gif' },
-  { name: 'Bear', hp: 55, str: 20, def: 15, spd: 15, imageUrl: 'assets/Bear.gif' },
-  { name: 'Tiger', hp: 45, str: 18, def: 12, spd: 38, imageUrl: 'assets/Tiger.gif' },
-  { name: 'Lion', hp: 50, str: 20, def: 14, spd: 34, imageUrl: 'assets/Lion.gif' },
-  { name: 'Elephant', hp: 80, str: 25, def: 22, spd: 8, imageUrl: 'assets/Elephant.gif' },
-  { name: 'Hawk', hp: 18, str: 8, def: 4, spd: 60, imageUrl: 'assets/Hawk.gif' },
-  { name: 'Snake', hp: 20, str: 12, def: 5, spd: 45, imageUrl: 'assets/Snake.gif' },
-  { name: 'Crocodile', hp: 55, str: 18, def: 18, spd: 12, imageUrl: 'assets/Crocodile.gif' },
-  { name: 'Boar', hp: 35, str: 13, def: 10, spd: 22, imageUrl: 'assets/Boar.gif' },
-  { name: 'Owl', hp: 20, str: 7, def: 4, spd: 40, imageUrl: 'assets/Owl.gif' },
-  { name: 'Frog', hp: 20, str: 6, def: 4, spd: 30, imageUrl: 'assets/Frog.gif' },
-  { name: 'Lizard', hp: 22, str: 7, def: 5, spd: 28, imageUrl: 'assets/Lizard.gif' },
-  { name: 'Goblin Farmer', hp: 35, str: 12, def: 9, spd: 22, imageUrl: 'assets/Goblin Farmer.gif' },
-  { name: 'Goblin Mage', hp: 28, str: 18, def: 7, spd: 28, imageUrl: 'assets/Goblin Mage.gif' },
-  { name: 'Human Warrior', hp: 45, str: 18, def: 14, spd: 22, imageUrl: 'assets/Human Warrior.gif' },
-  { name: 'Human Knight', hp: 55, str: 22, def: 20, spd: 16, imageUrl: 'assets/Human Knight.gif' },
-  { name: 'Elf Archer', hp: 30, str: 14, def: 8, spd: 42, imageUrl: 'assets/Elf Archer.gif' },
-  { name: 'Elf Mage', hp: 28, str: 20, def: 7, spd: 35, imageUrl: 'assets/Elf Mage.webp' },
-  { name: 'Orc Fighter', hp: 65, str: 25, def: 20, spd: 14, imageUrl: 'assets/Orc Fighter.gif' },
-  { name: 'Orc Shaman', hp: 55, str: 22, def: 15, spd: 18, imageUrl: 'assets/Orc Shaman.gif' },
-  { name: 'Beast People Hunter', hp: 45, str: 16, def: 12, spd: 30, imageUrl: 'assets/Beast People Hunter.gif' },
-  { name: 'Beast People Warrior', hp: 55, str: 20, def: 18, spd: 20, imageUrl: 'assets/Beast People Warrior.gif' }
-];
-   
+  enemies = [
+    { name: 'Caterpillar', hp: 15, str: 3, def: 4, spd: 10, imageUrl: 'assets/Caterpillar.gif' },
+    { name: 'Mouse', hp: 18, str: 4, def: 3, spd: 55, imageUrl: 'assets/Mouse.gif' },
+    { name: 'Bunny', hp: 22, str: 6, def: 5, spd: 35, imageUrl: 'assets/Bunny.gif' },
+    { name: 'Deer', hp: 35, str: 9, def: 6, spd: 30, imageUrl: 'assets/Deer.webp' },
+    { name: 'Sloth', hp: 28, str: 7, def: 10, spd: 8, imageUrl: 'assets/Sloth.gif' },
+    { name: 'Goat', hp: 30, str: 10, def: 8, spd: 20, imageUrl: 'assets/Goat.gif' },
+    { name: 'Panda', hp: 40, str: 12, def: 12, spd: 12, imageUrl: 'assets/Panda.gif' },
+    { name: 'Bison', hp: 45, str: 14, def: 12, spd: 15, imageUrl: 'assets/Bison.gif' },
+    { name: 'Gorilla', hp: 50, str: 20, def: 12, spd: 18, imageUrl: 'assets/Gorilla.gif' },
+    { name: 'Beetle', hp: 18, str: 5, def: 12, spd: 12, imageUrl: 'assets/Beetle.gif' },
+    { name: 'Fox', hp: 25, str: 9, def: 5, spd: 40, imageUrl: 'assets/Fox.gif' },
+    { name: 'Wolf', hp: 35, str: 14, def: 9, spd: 32, imageUrl: 'assets/Wolf.gif' },
+    { name: 'Bear', hp: 55, str: 20, def: 15, spd: 15, imageUrl: 'assets/Bear.gif' },
+    { name: 'Tiger', hp: 45, str: 18, def: 12, spd: 38, imageUrl: 'assets/Tiger.gif' },
+    { name: 'Lion', hp: 50, str: 20, def: 14, spd: 34, imageUrl: 'assets/Lion.gif' },
+    { name: 'Elephant', hp: 80, str: 25, def: 22, spd: 8, imageUrl: 'assets/Elephant.gif' },
+    { name: 'Hawk', hp: 18, str: 8, def: 4, spd: 60, imageUrl: 'assets/Hawk.gif' },
+    { name: 'Snake', hp: 20, str: 12, def: 5, spd: 45, imageUrl: 'assets/Snake.gif' },
+    { name: 'Crocodile', hp: 55, str: 18, def: 18, spd: 12, imageUrl: 'assets/Crocodile.gif' },
+    { name: 'Boar', hp: 35, str: 13, def: 10, spd: 22, imageUrl: 'assets/Boar.gif' },
+    { name: 'Owl', hp: 20, str: 7, def: 4, spd: 40, imageUrl: 'assets/Owl.gif' },
+    { name: 'Frog', hp: 20, str: 6, def: 4, spd: 30, imageUrl: 'assets/Frog.gif' },
+    { name: 'Lizard', hp: 22, str: 7, def: 5, spd: 28, imageUrl: 'assets/Lizard.gif' },
+    { name: 'Goblin Farmer', hp: 35, str: 12, def: 9, spd: 22, imageUrl: 'assets/Goblin Farmer.gif' },
+    { name: 'Goblin Mage', hp: 28, str: 18, def: 7, spd: 28, imageUrl: 'assets/Goblin Mage.gif' },
+    { name: 'Human Warrior', hp: 45, str: 18, def: 14, spd: 22, imageUrl: 'assets/Human Warrior.gif' },
+    { name: 'Human Knight', hp: 55, str: 22, def: 20, spd: 16, imageUrl: 'assets/Human Knight.gif' },
+    { name: 'Elf Archer', hp: 30, str: 14, def: 8, spd: 42, imageUrl: 'assets/Elf Archer.gif' },
+    { name: 'Elf Mage', hp: 28, str: 20, def: 7, spd: 35, imageUrl: 'assets/Elf Mage.webp' },
+    { name: 'Orc Fighter', hp: 65, str: 25, def: 20, spd: 14, imageUrl: 'assets/Orc Fighter.gif' },
+    { name: 'Orc Shaman', hp: 55, str: 22, def: 15, spd: 18, imageUrl: 'assets/Orc Shaman.gif' },
+    { name: 'Beast People Hunter', hp: 45, str: 16, def: 12, spd: 30, imageUrl: 'assets/Beast People Hunter.gif' },
+    { name: 'Beast People Warrior', hp: 55, str: 20, def: 18, spd: 20, imageUrl: 'assets/Beast People Warrior.gif' }
+  ];
+
   biomeEnemies: any = {
-    forest: ['Caterpillar', 'Bunny', 'Deer', 'Sloth', 'Goblin Farmer', 'Fox', 'Wolf'],
-    plains: ['Mouse', 'Goat', 'Bison', 'Human Warrior', 'Human Knight', 'Bear', 'Tiger', 'Lion'],
-    jungle: ['Panda', 'Gorilla', 'Elf Archer', 'Elf Mage'],
-    mountains: ['Orc Fighter', 'Orc Shaman', 'Elephant'],
-    swamp: ['Beetle', 'Goblin Mage', 'Beast People Hunter', 'Beast People Warrior', 'Crocodile', 'Boar', 'Frog', 'Lizard', 'Owl', 'Snake', 'Hawk']
+    forest: [
+      'Caterpillar', 'Bunny', 'Deer', 'Wolf', 'Bear',
+      'Tiger', 'Lion', 'Fox', 'Owl', 'Sloth', 'Boar'
+    ],
+    plains: [
+      'Mouse', 'Goat', 'Bison', 'Human Warrior',
+      'Human Knight', 'Elephant', 'Hawk', 'Snake'
+    ],
+    jungle: [
+      'Panda', 'Gorilla', 'Elf Archer', 'Elf Mage',
+      'Orc Shaman', 'Beast People Hunter', 'Beast People Warrior'
+    ],
+    mountains: [
+      'Orc Fighter', 'Elephant', 'Goat', 'Tiger'
+    ],
+    swamp: [
+      'Beetle', 'Goblin Mage', 'Frog', 'Lizard',
+      'Crocodile', 'Boar', 'Owl', 'Hawk', 'Snake'
+    ]
   };
+
   guardians: Entity[] = [
     {
       name: 'Rabbit',
@@ -171,56 +191,56 @@ showPopulation = false;
   ];
   guardianNextHealTimeout: any = null;
   guardianRegenMessage: string = '';
-animals: AnimalPopulation[] = [
-  // 🌳 Forest
-  { name: 'Caterpillar', originalCount: 30, count: 30, biome: 'forest' },
-  { name: 'Bunny', originalCount: 20, count: 20, biome: 'forest' },
-  { name: 'Deer', originalCount: 20, count: 20, biome: 'forest' },
-  { name: 'Wolf', originalCount: 20, count: 20, biome: 'forest' },
-  { name: 'Bear', originalCount: 10, count: 10, biome: 'forest' },
-  { name: 'Tiger', originalCount: 8, count: 8, biome: 'forest' },
-  { name: 'Lion', originalCount: 5, count: 5, biome: 'forest' },
-  { name: 'Fox', originalCount: 20, count: 20, biome: 'forest' },
-  { name: 'Owl', originalCount: 15, count: 15, biome: 'forest' },
-  { name: 'Sloth', originalCount: 15, count: 15, biome: 'forest' },
-  { name: 'Boar', originalCount: 10, count: 10, biome: 'forest' },
+  animals: AnimalPopulation[] = [
+    // 🌳 Forest
+    { name: 'Caterpillar', originalCount: 30, count: 30, biome: 'forest' },
+    { name: 'Bunny', originalCount: 20, count: 20, biome: 'forest' },
+    { name: 'Deer', originalCount: 20, count: 20, biome: 'forest' },
+    { name: 'Wolf', originalCount: 20, count: 20, biome: 'forest' },
+    { name: 'Bear', originalCount: 10, count: 10, biome: 'forest' },
+    { name: 'Tiger', originalCount: 8, count: 8, biome: 'forest' },
+    { name: 'Lion', originalCount: 5, count: 5, biome: 'forest' },
+    { name: 'Fox', originalCount: 20, count: 20, biome: 'forest' },
+    { name: 'Owl', originalCount: 15, count: 15, biome: 'forest' },
+    { name: 'Sloth', originalCount: 15, count: 15, biome: 'forest' },
+    { name: 'Boar', originalCount: 10, count: 10, biome: 'forest' },
 
-  // 🌾 Plains
-  { name: 'Mouse', originalCount: 30, count: 30, biome: 'plains' },
-  { name: 'Goat', originalCount: 30, count: 30, biome: 'plains' },
-  { name: 'Bison', originalCount: 12, count: 12, biome: 'plains' },
-  { name: 'Human Warrior', originalCount: 15, count: 15, biome: 'plains' },
-  { name: 'Human Knight', originalCount: 10, count: 10, biome: 'plains' },
-  { name: 'Elephant', originalCount: 4, count: 4, biome: 'plains' },
-  { name: 'Hawk', originalCount: 20, count: 20, biome: 'plains' },
-  { name: 'Snake', originalCount: 15, count: 15, biome: 'plains' },
+    // 🌾 Plains
+    { name: 'Mouse', originalCount: 30, count: 30, biome: 'plains' },
+    { name: 'Goat', originalCount: 30, count: 30, biome: 'plains' },
+    { name: 'Bison', originalCount: 12, count: 12, biome: 'plains' },
+    { name: 'Human Warrior', originalCount: 15, count: 15, biome: 'plains' },
+    { name: 'Human Knight', originalCount: 10, count: 10, biome: 'plains' },
+    { name: 'Elephant', originalCount: 4, count: 4, biome: 'plains' },
+    { name: 'Hawk', originalCount: 20, count: 20, biome: 'plains' },
+    { name: 'Snake', originalCount: 15, count: 15, biome: 'plains' },
 
-  // 🌴 Jungle
-  { name: 'Panda', originalCount: 20, count: 20, biome: 'jungle' },
-  { name: 'Gorilla', originalCount: 10, count: 10, biome: 'jungle' },
-  { name: 'Elf Archer', originalCount: 8, count: 8, biome: 'jungle' },
-  { name: 'Elf Mage', originalCount: 6, count: 6, biome: 'jungle' },
-  { name: 'Orc Shaman', originalCount: 10, count: 10, biome: 'jungle' },
-  { name: 'Beast People Hunter', originalCount: 20, count: 20, biome: 'jungle' },
-  { name: 'Beast People Warrior', originalCount: 10, count: 10, biome: 'jungle' },
+    // 🌴 Jungle
+    { name: 'Panda', originalCount: 20, count: 20, biome: 'jungle' },
+    { name: 'Gorilla', originalCount: 10, count: 10, biome: 'jungle' },
+    { name: 'Elf Archer', originalCount: 8, count: 8, biome: 'jungle' },
+    { name: 'Elf Mage', originalCount: 6, count: 6, biome: 'jungle' },
+    { name: 'Orc Shaman', originalCount: 10, count: 10, biome: 'jungle' },
+    { name: 'Beast People Hunter', originalCount: 20, count: 20, biome: 'jungle' },
+    { name: 'Beast People Warrior', originalCount: 10, count: 10, biome: 'jungle' },
 
-  // ⛰️ Mountains
-  { name: 'Orc Fighter', originalCount: 20, count: 20, biome: 'mountains' },
-  { name: 'Elephant', originalCount: 3, count: 3, biome: 'mountains' },
-  { name: 'Goat', originalCount: 20, count: 20, biome: 'mountains' },
-  { name: 'Tiger', originalCount: 5, count: 5, biome: 'mountains' },
+    // ⛰️ Mountains
+    { name: 'Orc Fighter', originalCount: 20, count: 20, biome: 'mountains' },
+    { name: 'Elephant', originalCount: 3, count: 3, biome: 'mountains' },
+    { name: 'Goat', originalCount: 20, count: 20, biome: 'mountains' },
+    { name: 'Tiger', originalCount: 5, count: 5, biome: 'mountains' },
 
-  // 🌿 Swamp
-  { name: 'Beetle', originalCount: 30, count: 30, biome: 'swamp' },
-  { name: 'Goblin Mage', originalCount: 10, count: 10, biome: 'swamp' },
-  { name: 'Frog', originalCount: 25, count: 25, biome: 'swamp' },
-  { name: 'Lizard', originalCount: 20, count: 20, biome: 'swamp' },
-  { name: 'Crocodile', originalCount: 6, count: 6, biome: 'swamp' },
-  { name: 'Boar', originalCount: 10, count: 10, biome: 'swamp' },
-  { name: 'Owl', originalCount: 12, count: 12, biome: 'swamp' },
-  { name: 'Hawk', originalCount: 15, count: 15, biome: 'swamp' },
-  { name: 'Snake', originalCount: 12, count: 12, biome: 'swamp' }
-];
+    // 🌿 Swamp
+    { name: 'Beetle', originalCount: 30, count: 30, biome: 'swamp' },
+    { name: 'Goblin Mage', originalCount: 10, count: 10, biome: 'swamp' },
+    { name: 'Frog', originalCount: 25, count: 25, biome: 'swamp' },
+    { name: 'Lizard', originalCount: 20, count: 20, biome: 'swamp' },
+    { name: 'Crocodile', originalCount: 6, count: 6, biome: 'swamp' },
+    { name: 'Boar', originalCount: 10, count: 10, biome: 'swamp' },
+    { name: 'Owl', originalCount: 12, count: 12, biome: 'swamp' },
+    { name: 'Hawk', originalCount: 15, count: 15, biome: 'swamp' },
+    { name: 'Snake', originalCount: 12, count: 12, biome: 'swamp' }
+  ];
 
   enemyEmojis: { [key: string]: string } = {
     "Caterpillar": "🐛",
@@ -298,6 +318,42 @@ animals: AnimalPopulation[] = [
   // New variables for the pre-fight screen
   isPreBossFightScreen: boolean = false;
   preFightEnemy: Entity | null = null;
+  ngOnInit() {
+  this.loadGame();
+  this.playBackgroundMusic();
+  this.gofull();
+
+  const savedBiome = localStorage.getItem('selectedBiome');
+  if (savedBiome) {
+    this.selectedBiome = savedBiome;
+    this.addMessage(`🌿 You are in the ${this.selectedBiome} biome.`);
+  }
+
+  const savedBoss = localStorage.getItem('selectedBoss');
+  if (savedBoss && this.guardian) { // ensure guardian exists
+    let bossTemplate = this.bosses.find(b => b.name === savedBoss);
+    if (bossTemplate) {
+      // Clone boss object so we don't mutate original template
+      this.currentEnemy = { ...bossTemplate };
+
+      // Scale stats based on player's/guardian's stats
+      this.currentEnemy.hp = this.guardian.hp + 1000;
+      this.currentEnemy.str = Math.floor(this.guardian.str / 4);
+      this.currentEnemy.def = this.guardian.def + Math.floor(Math.random() * 10); 
+      this.currentEnemy.spd = Math.floor(this.guardian.spd / 2);
+
+      this.addMessage(`👑 You chose to fight ${this.currentEnemy.name}!`);
+    }
+
+    // Clear after loading so it doesn't re-trigger every time
+    localStorage.removeItem('selectedBoss');
+  }
+
+  // Read defeated bosses from localStorage
+  const defeatedBosses: string[] = JSON.parse(localStorage.getItem('defeatedBosses') || '[]');
+  // Set the count so the template reflects correctly
+  this.bossesDefeated = defeatedBosses.length;
+}
 
   selectGuardian(guardian: Entity, index: number) {
     this.selectedGuardian = guardian;
@@ -305,104 +361,105 @@ animals: AnimalPopulation[] = [
   }
 
   getGuardianTitle(guardian: Entity): string {
-  if (!guardian.titles) return guardian.name;
-  const level = guardian.evolutionLevel ?? 0;   // use stored evolutionLevel
-  return guardian.titles[level]?.title || guardian.name;
-}
+    if (!guardian.titles) return guardian.name;
+    const level = guardian.evolutionLevel ?? 0;   // use stored evolutionLevel
+    return guardian.titles[level]?.title || guardian.name;
+  }
 
-scaleEnemiesWithPlayer(playerHp: number) {
-  if (playerHp <= 500) return;
+  scaleEnemiesWithPlayer(playerHp: number,playerstr: number,playerdef: number,playerspd:number) {
+    if (playerHp <= 500) return;
 
-  // Scale regular enemies
-  this.enemies.forEach(enemy => {
-    const animal = this.animals.find(a => a.name === enemy.name);
-    if (animal && animal.count > 0) {
-      const randomBonus = Math.floor(Math.random() * 30) + 1; // 1-100
-      const randomBonus2 = Math.floor(Math.random() * 30) + 1; // 1-100
-      const randomBonus3 = Math.floor(Math.random() * 20) + 1; // 1-100
+    // Scale regular enemies
+    this.enemies.forEach(enemy => {
+      const animal = this.animals.find(a => a.name === enemy.name);
+      if (animal && animal.count > 0) {
+        const randomBonus = Math.floor(Math.random() * 100) + 15; // 1-100
+        const randomBonus2 = Math.floor(Math.random() * 30) + 15; // 1-100
+        const randomBonus3 = Math.floor(Math.random() * 30) + 15; // 1-100
 
-      enemy.hp = playerHp + randomBonus;
-      enemy.def = 50 + randomBonus2 ;
-      enemy.spd = 50 + randomBonus3
-      enemy.str = 50 + randomBonus
-    }
-  });
-
-  // Scale bosses dynamically too
-  this.bosses.forEach(boss => {
-    const randomBonus = Math.floor(Math.random() * 500) + 200; // 1-100
-    boss.hp = playerHp + randomBonus;
-  });
-}
-popupEvolutionLevel?: number; 
- // Returns the guardian's permanent evolution level
-getEvolutionLevel(guardian: Entity): number {
-  return guardian.evolutionLevel ?? 0; // DO NOT use HP here
-}
-
-// Returns the correct image for the guardian
-getGuardianImage(guardian: Entity): string {
-  if (!guardian || !guardian.titles) return guardian.image;
-  const level = guardian.evolutionLevel ?? 0; // use evolutionLevel, not HP
-  return `assets/Gimages/${guardian.name}/${level + 1}.png`;
-}
-
-// Check and evolve only forward
-checkEvolution() {
-  if (!this.guardian || !this.guardian.titles) return;
-
-  const titles = this.guardian.titles;
-  let currentLevel = this.guardian.evolutionLevel ?? 0;
-  this.scaleEnemiesWithPlayer(this.guardian.hp);
-  // Find the highest stage that qualifies
-  for (let i = titles.length - 1; i >= 0; i--) {
-    if (this.guardian.hp >= titles[i].hp) {
-      if (i > currentLevel) { // only evolve forward
-        this.guardian.evolutionLevel = i;
-        const stage = titles[i];
-
-        // Apply bonuses
-        this.guardian.str += stage.bonus.str;
-        this.guardian.def += stage.bonus.def;
-        this.guardian.spd += stage.bonus.spd;
-
-        // Set popup
-        this.evolutionTitle = stage.title;
-        this.evolutionImageSrc = `assets/Gimages/${this.guardian.name}/${i+1}.png`;
-        this.showEvolutionPopup = true;
-
-        this.addMessage(`${this.guardian.name} evolved into ${stage.title}!`);
+        enemy.hp = playerHp + randomBonus;
+        enemy.def = playerdef - randomBonus2;
+        enemy.spd = playerspd - randomBonus3
+        enemy.str = playerstr - (playerstr/2)  
+ 
       }
-      break;
+    });
+
+    // Scale bosses dynamically too
+    this.bosses.forEach(boss => {
+      const randomBonus = Math.floor(Math.random() * 500) + 200; // 1-100
+      boss.hp = playerHp + randomBonus;
+    });
+  }
+  popupEvolutionLevel?: number;
+  // Returns the guardian's permanent evolution level
+  getEvolutionLevel(guardian: Entity): number {
+    return guardian.evolutionLevel ?? 0; // DO NOT use HP here
+  }
+
+  // Returns the correct image for the guardian
+  getGuardianImage(guardian: Entity): string {
+    if (!guardian || !guardian.titles) return guardian.image;
+    const level = guardian.evolutionLevel ?? 0; // use evolutionLevel, not HP
+    return `assets/Gimages/${guardian.name}/${level + 1}.png`;
+  }
+
+  // Check and evolve only forward
+  checkEvolution() {
+    if (!this.guardian || !this.guardian.titles) return;
+
+    const titles = this.guardian.titles;
+    let currentLevel = this.guardian.evolutionLevel ?? 0;
+    this.scaleEnemiesWithPlayer(this.guardian.hp,this.guardian.str,this.guardian.def,this.guardian.spd,);
+    // Find the highest stage that qualifies
+    for (let i = titles.length - 1; i >= 0; i--) {
+      if (this.guardian.hp >= titles[i].hp) {
+        if (i > currentLevel) { // only evolve forward
+          this.guardian.evolutionLevel = i;
+          const stage = titles[i];
+
+          // Apply bonuses
+          this.guardian.str += stage.bonus.str;
+          this.guardian.def += stage.bonus.def;
+          this.guardian.spd += stage.bonus.spd;
+
+          // Set popup
+          this.evolutionTitle = stage.title;
+          this.evolutionImageSrc = `assets/Gimages/${this.guardian.name}/${i + 1}.png`;
+          this.showEvolutionPopup = true;
+
+          this.addMessage(`${this.guardian.name} evolved into ${stage.title}!`);
+        }
+        break;
+      }
     }
   }
-}
 
 
 
 
- 
+
 
 
 
 
 
   assignRandomGuardian(index: number) {
-  this.playclick();
-  this.playselected();
-  if (!this.bgMusic) this.playBackgroundMusic();
+    this.playclick();
+    this.playselected();
+    if (!this.bgMusic) this.playBackgroundMusic();
 
-  this.skillPoints = 0;
-  // Copy guardian and set evolution level to 0
-  this.guardian = { ...this.guardians[index], evolutionLevel: 0 };
-  this.guardianMaxHp = this.guardian.hp;
-  this.playerGuardianAssigned = true;
+    this.skillPoints = 0;
+    // Copy guardian and set evolution level to 0
+    this.guardian = { ...this.guardians[index], evolutionLevel: 0 };
+    this.guardianMaxHp = this.guardian.hp;
+    this.playerGuardianAssigned = true;
 
-  this.addMessage(`You have been assigned the guardian: ${this.guardian.name}!`);
-  this.startGuardianRegen();
-  this.checkEvolution(); // Check if already qualifies for evolution
-  this.saveGame();
-}
+    this.addMessage(`You have been assigned the guardian: ${this.guardian.name}!`);
+    this.startGuardianRegen();
+    this.checkEvolution(); // Check if already qualifies for evolution
+    this.saveGame();
+  }
 
   getNextEvolution(guardian: Entity) {
     if (!guardian.titles) return null;
@@ -427,40 +484,40 @@ checkEvolution() {
     this.addMessage(`⚡ You spent 1 Skill Point on ${stat.toUpperCase()}.`);
     this.saveGame();
   }
-regenProgress: number = 0;
+  regenProgress: number = 0;
   startGuardianRegen() {
-  if (!this.guardian || this.guardian.hp >= this.guardianMaxHp) return;
+    if (!this.guardian || this.guardian.hp >= this.guardianMaxHp) return;
 
-  this.stopGuardianRegen();
+    this.stopGuardianRegen();
 
-  let secondsRemaining = 10;
-  this.regenProgress = 0;
-  this.guardianRegenMessage = `⏱️ Healing in progress... Next +10 HP in ${secondsRemaining}s`;
+    let secondsRemaining = 5;
+    this.regenProgress = 0;
+    this.guardianRegenMessage = `⏱️ Healing in progress... Next +10 HP in ${secondsRemaining}s`;
 
-  this.guardianNextHealTimeout = setInterval(() => {
-    secondsRemaining--;
+    this.guardianNextHealTimeout = setInterval(() => {
+      secondsRemaining--;
 
-    // Update progress bar (fill from 0 to 100%)
-    this.regenProgress = ((10 - secondsRemaining) / 10) * 100;
+      // Update progress bar (fill from 0 to 100%)
+      this.regenProgress = ((5 - secondsRemaining) / 5) * 100;
 
-    if (secondsRemaining > 0) {
-      this.guardianRegenMessage = `⏱️ Healing in progress... Next +10 HP in ${secondsRemaining}s`;
-    } else {
-      if (this.guardian) {
-        this.guardian.hp = Math.min(this.guardian.hp + 10, this.guardianMaxHp);
+      if (secondsRemaining > 0) {
+        this.guardianRegenMessage = `⏱️ Healing in progress... Next +10 HP in ${secondsRemaining}s`;
+      } else {
+        if (this.guardian) {
+          this.guardian.hp = Math.min(this.guardian.hp + 10, this.guardianMaxHp);
+        }
+
+        this.guardianRegenMessage = '';
+        this.regenProgress = 0;
+
+        clearInterval(this.guardianNextHealTimeout);
+
+        if (this.guardian && this.guardian.hp < this.guardianMaxHp) {
+          this.startGuardianRegen();
+        }
       }
-
-      this.guardianRegenMessage = '';
-      this.regenProgress = 0;
-
-      clearInterval(this.guardianNextHealTimeout);
-
-      if (this.guardian && this.guardian.hp < this.guardianMaxHp) {
-        this.startGuardianRegen();
-      }
-    }
-  }, 1000);
-}
+    }, 1000);
+  }
 
   stopGuardianRegen() {
     if (this.guardianRegenInterval) {
@@ -474,11 +531,14 @@ regenProgress: number = 0;
     this.guardianRegenMessage = '';
   }
 
-  ngOnInit() {
-    this.loadGame();
-    this.playBackgroundMusic();
+  
+  openMap() {
+    this.router.navigate(['/map']);
   }
-
+  async gofull() {
+    await StatusBar.hide();
+    await NavigationBar.hide();
+  }
   playBackgroundMusic() {
     this.bgMusic = new Audio('assets/sounds/bg-music.mp3');
     this.bgMusic.loop = true;
@@ -554,24 +614,40 @@ regenProgress: number = 0;
     }
 
     if (this.currentEnemy.hp <= 0) {
-      if (this.currentEnemy.name === this.finalBoss.name) {
-        this.finalBossDefeated = true; // Set the flag to trigger the win screen
-        this.addMessage("🎉 You have defeated the World Devourer! The world is safe!");
-      } else if (this.currentEnemy.isBoss) {
-        this.bossesDefeated++;
-        this.addMessage(`🏆 You defeated boss ${this.currentEnemy.name}!`);
-      } else {
-        const animal = this.animals.find(a => a.name === this.currentEnemy!.name);
-        if (animal && animal.count !== undefined) animal.count = Math.max(0, animal.count - 1);
-        this.skillPoints++;
-        this.addMessage(`⭐ You earned 1 Skill Point! (Total: ${this.skillPoints})`);
-        this.absorbStats(this.currentEnemy);
-      }
-      this.currentEnemy = null;
-      this.maybeStartRegen();
-      this.saveGame();
-      return;
+  // Final boss
+  if (this.currentEnemy.name === this.finalBoss.name) {
+    this.finalBossDefeated = true;
+    this.addMessage("🎉 You have defeated the World Devourer! The world is safe!");
+  } 
+  // Regular bosses
+  else if (this.bosses.some(b => b.name === this.currentEnemy!.name)) {
+    // Save defeated boss to session
+    const defeatedBosses: string[] = JSON.parse(localStorage.getItem('defeatedBosses') || '[]');
+    if (!defeatedBosses.includes(this.currentEnemy.name)) {
+      defeatedBosses.push(this.currentEnemy.name);
+      // Read defeated bosses from localStorage 
+
+      // Set the count so the template reflects correctly
+      this.bossesDefeated = defeatedBosses.length;
+      localStorage.setItem('defeatedBosses', JSON.stringify(defeatedBosses));
     }
+
+    this.addMessage(`🏆 You defeated boss ${this.currentEnemy.name}!`);
+  } 
+  // Regular enemies
+  else {
+    const animal = this.animals.find(a => a.name === this.currentEnemy!.name);
+    if (animal && animal.count !== undefined) animal.count = Math.max(0, animal.count - 1);
+    this.skillPoints++;
+    this.addMessage(`⭐ You earned 1 Skill Point! (Total: ${this.skillPoints})`);
+    this.absorbStats(this.currentEnemy);
+  }
+
+  this.currentEnemy = null;
+  this.maybeStartRegen();
+  this.saveGame();
+  return;
+}
 
     if (!this.rollDodge(this.currentEnemy, this.guardian)) {
       const dmg = this.calculateDamage(this.currentEnemy, this.guardian);
@@ -645,26 +721,17 @@ regenProgress: number = 0;
     this.saveGame();
   }
 
-  toggleFullscreen() {
+  async toggleFullscreen() {
     this.playclick();
     if (!this.isFullscreen) {
-      const elem = document.documentElement;
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if ((elem as any).webkitRequestFullscreen) {
-        (elem as any).webkitRequestFullscreen();
-      } else if ((elem as any).msRequestFullscreen) {
-        (elem as any).msRequestFullscreen();
-      }
+      // Enter fullscreen immersive mode
+      await StatusBar.hide();
+      await NavigationBar.hide();
       this.isFullscreen = true;
     } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if ((document as any).webkitExitFullscreen) {
-        (document as any).webkitExitFullscreen();
-      } else if ((document as any).msExitFullscreen) {
-        (document as any).msExitFullscreen();
-      }
+      // Exit fullscreen
+      await StatusBar.show();
+      await NavigationBar.show();
       this.isFullscreen = false;
     }
   }
@@ -683,7 +750,15 @@ regenProgress: number = 0;
     this.finalBossAvailable = false;
     this.gameWon = false;
   }
+  async enterImmersiveMode() {
+    await StatusBar.hide();
+    await NavigationBar.hide();
+  }
 
+  async exitImmersiveMode() {
+    await StatusBar.show();
+    await NavigationBar.show();
+  }
   autoAttackEnemy() {
     if (!this.guardian || !this.currentEnemy) return;
     if (this.autoAttackInterval) {
@@ -708,16 +783,16 @@ regenProgress: number = 0;
     if (!this.guardian) return;
     this.stopGuardianRegen();
 
-    if (this.bossesDefeated >= this.totalBossesToWin) {
-      this.finalBossAvailable = true;
-      this.addMessage("⚠️ You are ready to face the World Devourer!");
-      return;
-    }
+    // if (this.bossesDefeated >= this.totalBossesToWin) {
+    //   this.finalBossAvailable = true;
+    //   this.addMessage("⚠️ You are ready to face the World Devourer!");
+    //   return;
+    // }
 
     const possibleEnemies = this.biomeEnemies[this.selectedBiome] || [];
     const enemiesInBiome = this.enemies.filter(
       e => possibleEnemies.includes(e.name) &&
-      (this.animals.find(a => a.name === e.name)?.count ?? 0) > 0
+        (this.animals.find(a => a.name === e.name)?.count ?? 0) > 0
     );
 
     if (enemiesInBiome.length === 0) {
@@ -725,34 +800,34 @@ regenProgress: number = 0;
       this.currentEnemy = null;
       return;
     }
-    
+
     const randomIndex = Math.floor(Math.random() * enemiesInBiome.length);
     const enemy: Entity = { ...enemiesInBiome[randomIndex] };
     (enemy as any).hpBeforeFight = enemy.hp;
     this.currentEnemy = enemy;
     this.addMessage(`You encountered a ${this.currentEnemy.name}!`);
   }
-  
+
   // New function to display the pre-fight screen
- searchBoss() {
-  this.playclick();
-  this.stopGuardianRegen();
-  const bossTemplate = this.bosses[Math.floor(Math.random() * this.bosses.length)];
-  const randomHP = Math.floor(Math.random() * 1000) + 500;  
-  const boss: Entity = {
-    name: bossTemplate.name,
-    hp: randomHP,
-    str: Math.floor(25 + Math.random() * 90),
-    def: Math.floor(15 + Math.random() * 80),
-    spd: Math.floor(15 + Math.random() * 75),
-    isBoss: true,
-    imageUrl: bossTemplate.imageUrl, // Kept for the battle screen
-    image: bossTemplate.image        // New property for the pre-fight screen
-  };
-  this.preFightEnemy = boss;
-  this.isPreBossFightScreen = true;
-}
-  
+  searchBoss() {
+    this.playclick();
+    this.stopGuardianRegen();
+    const bossTemplate = this.bosses[Math.floor(Math.random() * this.bosses.length)];
+    const randomHP = Math.floor(Math.random() * 1000) + 500;
+    const boss: Entity = {
+      name: bossTemplate.name,
+      hp: randomHP,
+      str: Math.floor(25 + Math.random() * 90),
+      def: Math.floor(15 + Math.random() * 80),
+      spd: Math.floor(15 + Math.random() * 75),
+      isBoss: true,
+      imageUrl: bossTemplate.imageUrl, // Kept for the battle screen
+      image: bossTemplate.image        // New property for the pre-fight screen
+    };
+    this.preFightEnemy = boss;
+    this.isPreBossFightScreen = true;
+  }
+
   // New function to start the actual fight
   startBossFight() {
     this.playclick();
@@ -798,6 +873,9 @@ regenProgress: number = 0;
       lastSaved: Date.now()
     };
     localStorage.setItem('gameState', JSON.stringify(state));
+    if (this.guardian) {
+    localStorage.setItem('guardian', JSON.stringify(this.guardian));
+  }
   }
 
   loadGame() {
