@@ -47,4 +47,13 @@ selectedBiome: string = 'forest'; // default biome
       this.selectedBiome = savedBiome;
     }
   }
+  getTotalOriginalCount(biome: string): number {
+  return this.getEnemiesForBiome(biome)
+    .reduce((sum, e) => sum + e.originalCount, 0);
+}
+
+getTotalCurrentCount(biome: string): number {
+  return this.getEnemiesForBiome(biome)
+    .reduce((sum, e) => sum + e.currentCount, 0);
+}
 }

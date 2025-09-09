@@ -7,7 +7,7 @@
   background-size: cover;      // cover entire div
   background-position: center; // center the image
   background-repeat: no-repeat;
-  overflow: hidden; }
+  overflow-x: auto; }
 .map-container {
   position: relative;
   width: 100%;

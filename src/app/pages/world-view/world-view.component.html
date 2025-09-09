@@ -5,7 +5,7 @@
   </select>
 </div>
 
-<h3>Enemies in {{ selectedBiome | titlecase }}</h3>
+<h3>Enemies in {{ selectedBiome | titlecase }} : <strong>{{ getTotalOriginalCount(selectedBiome) }}/{{ getTotalCurrentCount(selectedBiome) }}</strong> </h3> 
 
 <table class="enemy-table">
   <thead>
